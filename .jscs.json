@@ -1,0 +1,4 @@
+{
+	"disallowMultipleVarDecl": true,
+	"disallowSpacesInsideObjectBrackets": true
+}

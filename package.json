@@ -1,0 +1,43 @@
+{
+  "name": "gulp-jscs",
+  "version": "0.0.0",
+  "description": "Check JavaScript code style with jscs",
+  "license": "MIT",
+  "repository": "sindresorhus/gulp-jscs",
+  "author": {
+    "name": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "http://sindresorhus.com"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "gulpplugin",
+    "jscs",
+    "javascript",
+    "ecmascript",
+    "js",
+    "code",
+    "style",
+    "validate",
+    "lint",
+    "ast",
+    "check",
+    "checker"
+  ],
+  "dependencies": {
+    "event-stream": "~3.0.20",
+    "gulp-util": "~2.2.0",
+    "jscs": "~1.1.0"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  }
+}
