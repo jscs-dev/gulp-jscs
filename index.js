@@ -4,13 +4,10 @@ var es = require('event-stream');
 var gutil = require('gulp-util');
 var Checker = require('jscs/lib/checker');
 
-module.exports = function (configDir) {
-	var gulpfileDir = path.dirname(module.parent.filename);
-	var config = require(path.join(gulpfileDir, configDir ? configDir : '', '.jscs.json'));
+module.exports = function (config) {
 	var checker = new Checker();
-
 	checker.registerDefaultRules();
-	checker.configure(config);
+	checker.configure(require(config ? config : path.join(process.cwd(), '.jscs.json')));
 
 	return es.map(function (file, cb) {
 		var errors = checker.checkString(file.contents.toString(), path.basename(file.path));

@@ -31,19 +31,15 @@ gulp.task('default', function () {
 
 ## API
 
-### jscs(configFileDir)
+### jscs(configPath)
 
-#### configFileDir
+#### configPath
 
 Type: `String`  
-Default: *(gulpfile directory)*
+Default: `'__dirname + /.jscs.json'`
 
-Path to the directory the `.jscs.json` file resides in relative to the gulpfile.
-
-
-## Docs
-
-This task is configured using [.jscs.json](https://github.com/mdevils/node-jscs#configuration) file, located in the same folder as your gulpfile.
+By default the [.jscs.json](https://github.com/mdevils/node-jscs#configuration) besides the gulpfile will be used.  
+Specify a full path if it's located somewhere else.
 
 
 ## License
