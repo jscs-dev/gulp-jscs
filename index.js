@@ -18,7 +18,7 @@ module.exports = function (config) {
 		}).join('\n\n');
 
 		if (errorList.length > 0) {
-			gutil.log('gulp-jscs:\n' + out + '\n');
+			return cb(new Error('gulp-jscs:\n' + out + '\n'), file);
 		}
 
 		cb(null, file);
