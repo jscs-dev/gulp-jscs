@@ -4,7 +4,7 @@
 
 ![](screenshot.png)
 
-*Issues with the output should be reported on the [jscs issue tracker](https://github.com/mdevils/node-jscs/issues).*
+*Issues with the output should be reported on the jscs [issue tracker](https://github.com/mdevils/node-jscs/issues).*
 
 
 ## Install
