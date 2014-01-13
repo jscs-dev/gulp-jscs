@@ -35,7 +35,7 @@
   "dependencies": {
     "event-stream": "~3.0.20",
     "gulp-util": "~2.2.0",
-    "jscs": "~1.1.0"
+    "jscs": "~1.2.0"
   },
   "devDependencies": {
     "mocha": "*"
