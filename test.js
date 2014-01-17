@@ -27,6 +27,8 @@ it('should check code style of JS files', function (cb) {
 it('should pass valid files', function (cb) {
 	var stream = jscs();
 
+	stream.on('data', function () {});
+
 	stream.on('error', function (err) {
 		assert(false);
 	});
