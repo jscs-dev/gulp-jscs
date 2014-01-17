@@ -7,7 +7,7 @@ it('should check code style of JS files', function (cb) {
 	var stream = jscs();
 
 	stream.on('error', function (err) {
-		if (/Illegal space before/.test(err)) {
+		if (/Illegal space before/.test(err) && /Multiple var declaration at/.test(err)) {
 			assert(true);
 			cb();
 		}
@@ -19,6 +19,22 @@ it('should check code style of JS files', function (cb) {
 
 	stream.write(new gutil.File({
 		contents: new Buffer('var x = { a: 1 };')
+	}));
+
+	stream.end();
+});
+
+it('should pass valid files', function (cb) {
+	var stream = jscs();
+
+	stream.on('error', function (err) {
+		assert(false);
+	});
+
+	stream.on('end', cb);
+
+	stream.write(new gutil.File({
+		contents: new Buffer('var x = 1; var y = 2;')
 	}));
 
 	stream.end();

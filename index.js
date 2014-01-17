@@ -5,6 +5,7 @@ var through = require('through2');
 var Checker = require('jscs/lib/checker');
 
 module.exports = function (config) {
+	var out = [];
 	var checker = new Checker();
 	checker.registerDefaultRules();
 	checker.configure(require(config ? config : path.join(process.cwd(), '.jscs.json')));
@@ -23,16 +24,16 @@ module.exports = function (config) {
 		var errors = checker.checkString(file.contents.toString(), path.basename(file.path));
 		var errorList = errors.getErrorList();
 
-		var out = errorList.map(function (err) {
-			return errors.explainError(err);
-		}).join('\n\n');
-
-		if (errorList.length > 0) {
-			this.emit('error', new gutil.PluginError('gulp-jscs', out));
-			return cb();
-		}
+		errorList.forEach(function (err) {
+			out.push(errors.explainError(err));
+		});
 
 		this.push(file);
+		cb();
+	}, function (cb) {
+		if (out.length > 0) {
+			this.emit('error', new gutil.PluginError('gulp-jscs', out.join('\n\n')));
+		}
 		cb();
 	});
 };
