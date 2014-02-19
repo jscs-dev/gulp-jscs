@@ -7,7 +7,7 @@ it('should check code style of JS files', function (cb) {
 	var stream = jscs();
 
 	stream.on('error', function (err) {
-		if (/Illegal space before/.test(err) && /Multiple var declaration at/.test(err)) {
+		if (/Illegal space before/.test(err) && /Multiple var declaration/.test(err)) {
 			assert(true);
 			cb();
 		}
