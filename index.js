@@ -33,6 +33,8 @@ module.exports = function (config) {
 	}, function (cb) {
 		if (out.length > 0) {
 			this.emit('error', new gutil.PluginError('gulp-jscs', out.join('\n\n')));
+		} else {
+			this.push(null);
 		}
 
 		cb();
