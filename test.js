@@ -14,10 +14,14 @@ it('should check code style of JS files', function (cb) {
 	});
 
 	stream.write(new gutil.File({
+		base: __dirname,
+		path: __dirname + '/fixture.js',
 		contents: new Buffer('var x = 1,y = 2;')
 	}));
 
 	stream.write(new gutil.File({
+		base: __dirname,
+		path: __dirname + '/fixture2.js',
 		contents: new Buffer('var x = { a: 1 };')
 	}));
 

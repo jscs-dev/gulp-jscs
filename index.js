@@ -22,11 +22,14 @@ module.exports = function (config) {
 			return cb();
 		}
 
-		var errors = checker.checkString(file.contents.toString(), path.basename(file.path));
-
-		errors.getErrorList().forEach(function (err) {
-			out.push(errors.explainError(err, true));
-		});
+		try {
+			var errors = checker.checkString(file.contents.toString(), path.basename(file.path));
+			errors.getErrorList().forEach(function (err) {
+				out.push(errors.explainError(err, true));
+			});
+		} catch (err) {
+			out.push(err.message.replace('null:', file.relative + ':'));
+		}
 
 		this.push(file);
 		cb();
