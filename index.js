@@ -22,13 +22,19 @@ module.exports = function (config) {
 			return cb();
 		}
 
-		var errors = checker.checkString(file.contents.toString(), path.basename(file.path));
+		try {
+			var errors = checker.checkString(file.contents.toString(), path.basename(file.path));
 
-		errors.getErrorList().forEach(function (err) {
-			out.push(errors.explainError(err, true));
-		});
+			errors.getErrorList().forEach(function (err) {
+				out.push(errors.explainError(err, true));
+			});
 
-		this.push(file);
+			this.push(file);
+		} catch (err) {
+			this.emit('error', new gutil.PluginError('gulp-jscs', err));
+			return cb();
+		}
+		
 		cb();
 	}, function (cb) {
 		if (out.length > 0) {
