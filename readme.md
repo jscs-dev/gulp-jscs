@@ -1,4 +1,4 @@
-# [gulp](https://github.com/wearefractal/gulp)-jscs [![Build Status](https://secure.travis-ci.org/sindresorhus/gulp-jscs.png?branch=master)](http://travis-ci.org/sindresorhus/gulp-jscs)
+# [gulp](http://gulpjs.com)-jscs [![Build Status](https://travis-ci.org/sindresorhus/gulp-jscs.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-jscs)
 
 > Check JavaScript code style with [jscs](https://github.com/mdevils/node-jscs)
 
@@ -9,14 +9,12 @@
 
 ## Install
 
-Install with [npm](https://npmjs.org/package/gulp-jscs)
-
-```
-npm install --save-dev gulp-jscs
+```bash
+$ npm install --save-dev gulp-jscs
 ```
 
 
-## Example
+## Usage
 
 ```js
 var gulp = require('gulp');
@@ -35,8 +33,8 @@ gulp.task('default', function () {
 
 #### configPath
 
-Type: `String`  
-Default: `__dirname + '/.jscs.json'`
+Type: `string`  
+Default: `'./.jscsrc'`
 
 By default the [.jscsrc](https://github.com/mdevils/node-jscs#configuration) besides the gulpfile will be used.  
 Specify a full path if it's located somewhere else.
@@ -44,4 +42,4 @@ Specify a full path if it's located somewhere else.
 
 ## License
 
-MIT © [Sindre Sorhus](http://sindresorhus.com)
+[MIT](http://opensource.org/licenses/MIT) © [Sindre Sorhus](http://sindresorhus.com)
