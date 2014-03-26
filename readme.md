@@ -38,7 +38,7 @@ gulp.task('default', function () {
 Type: `String`  
 Default: `__dirname + '/.jscs.json'`
 
-By default the [.jscs.json](https://github.com/mdevils/node-jscs#configuration) besides the gulpfile will be used.  
+By default the [.jscsrc](https://github.com/mdevils/node-jscs#configuration) besides the gulpfile will be used.  
 Specify a full path if it's located somewhere else.
 
 
