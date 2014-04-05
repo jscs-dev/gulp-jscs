@@ -36,8 +36,7 @@ gulp.task('default', function () {
 Type: `string`  
 Default: `'./.jscsrc'`
 
-By default the [.jscsrc](https://github.com/mdevils/node-jscs#configuration) besides the gulpfile will be used.  
-Specify a full path if it's located somewhere else.
+Path to the [.jscsrc](https://github.com/mdevils/node-jscs#configuration).
 
 
 ## License

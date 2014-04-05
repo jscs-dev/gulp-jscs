@@ -2,15 +2,15 @@
 var path = require('path');
 var gutil = require('gulp-util');
 var through = require('through2');
-var Checker = require('jscs/lib/checker');
-var configFile = require('jscs/lib/cli-config');
+var Checker = require('jscs');
+var loadConfigFile = require('jscs/lib/cli-config');
 
-module.exports = function (config) {
+module.exports = function (configPath) {
 	var out = [];
 	var checker = new Checker();
 
 	checker.registerDefaultRules();
-	checker.configure(config ? require(config) : configFile.load('.jscsrc', process.cwd()));
+	checker.configure(loadConfigFile.load(configPath));
 
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
