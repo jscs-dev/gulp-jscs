@@ -21,7 +21,7 @@ var gulp = require('gulp');
 var jscs = require('gulp-jscs');
 
 gulp.task('default', function () {
-	gulp.src('src/app.js')
+	return gulp.src('src/app.js')
 		.pipe(jscs());
 });
 ```
