@@ -36,7 +36,9 @@ module.exports = function (configPath) {
 		cb();
 	}, function (cb) {
 		if (out.length > 0) {
-			this.emit('error', new gutil.PluginError('gulp-jscs', out.join('\n\n')));
+			this.emit('error', new gutil.PluginError('gulp-jscs', out.join('\n\n'), {
+				showStack: false
+			}));
 		}
 
 		cb();
