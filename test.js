@@ -40,6 +40,7 @@ it('should pass valid files', function (cb) {
 	stream.on('end', cb);
 
 	stream.write(new gutil.File({
+		path: __dirname + '/fixture.js',
 		contents: new Buffer('var x = 1; var y = 2;')
 	}));
 
@@ -52,7 +53,7 @@ it('should respect "excludeFiles" from config', function (cb) {
 	stream.on('data', function () {});
 
 	stream.on('error', function (err) {
-		assert(false, 'error should not be emmited');
+		assert(!err, err);
 	});
 
 	stream.on('end', cb);

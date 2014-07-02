@@ -23,7 +23,7 @@ module.exports = function (configPath) {
 			return cb();
 		}
 
-		if (file.path && checker._isExcluded(file.path)) {
+		if (checker._isExcluded(file.path)) {
 			this.push(file);
 			return cb();
 		}
