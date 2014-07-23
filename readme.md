@@ -1,5 +1,4 @@
-# [gulp](http://gulpjs.com)-jscs [![Build Status](https://travis-ci.org/sindresorhus/gulp-jscs.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-jscs)
-
+# [gulp](http://gulpjs.com)-jscs [![Build Status](https://travis-ci.org/sindresorhus/gulp-jscs.svg?branch=master)](https://travis-ci.org/sindresorhus/gulp-jscs) [![Dependency Status](https://david-dm.org/sindresorhus/gulp-jscs.svg)](https://david-dm.org/sindresorhus/gulp-jscs) [![devDependency Status](https://david-dm.org/sindresorhus/gulp-jscs/dev-status.svg)](https://david-dm.org/sindresorhus/gulp-jscs#info=devDependencies)
 > Check JavaScript code style with [jscs](https://github.com/mdevils/node-jscs)
 
 ![](screenshot.png)
