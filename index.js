@@ -29,7 +29,7 @@ module.exports = function (configPath) {
 		}
 
 		try {
-			var errors = checker.checkString(file.contents.toString(), path.basename(file.path));
+			var errors = checker.checkString(file.contents.toString(), file.relative);
 			errors.getErrorList().forEach(function (err) {
 				out.push(errors.explainError(err, true));
 			});
