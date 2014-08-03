@@ -28,6 +28,25 @@ it('should check code style of JS files', function (cb) {
 	stream.end();
 });
 
+it('should check code style of JS files using a preset', function (cb) {
+	var stream = jscs({preset: 'google'});
+
+	stream.on('error', function (err) {
+		if (/Missing line feed at file end/.test(err)) {
+			assert(true);
+			cb();
+		}
+	});
+
+	stream.write(new gutil.File({
+		base: __dirname,
+		path: __dirname + '/fixture.js',
+		contents: new Buffer('var x = 1,y = 2;')
+	}));
+
+	stream.end();
+});
+
 it('should pass valid files', function (cb) {
 	var stream = jscs();
 

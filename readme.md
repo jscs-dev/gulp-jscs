@@ -29,7 +29,7 @@ gulp.task('default', function () {
 
 ## API
 
-### jscs(configPath)
+### jscs(configPath | options)
 
 #### configPath
 
@@ -37,6 +37,12 @@ Type: `string`
 Default: `'./.jscsrc'`
 
 Path to the [.jscsrc](https://github.com/mdevils/node-jscs#configuration).
+
+#### options
+
+Type: `object`
+
+node-jscs [options](https://github.com/mdevils/node-jscs#options).
 
 
 ## License
