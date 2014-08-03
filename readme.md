@@ -9,7 +9,7 @@
 
 ## Install
 
-```bash
+```sh
 $ npm install --save-dev gulp-jscs
 ```
 
@@ -42,9 +42,9 @@ Path to the [.jscsrc](https://github.com/mdevils/node-jscs#configuration).
 
 Type: `object`
 
-node-jscs [options](https://github.com/mdevils/node-jscs#options).
+See the jscs [options](https://github.com/mdevils/node-jscs#options).
 
 
 ## License
 
-[MIT](http://opensource.org/licenses/MIT) © [Sindre Sorhus](http://sindresorhus.com)
+MIT © [Sindre Sorhus](http://sindresorhus.com)

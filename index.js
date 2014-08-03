@@ -1,5 +1,4 @@
 'use strict';
-var path = require('path');
 var gutil = require('gulp-util');
 var through = require('through2');
 var Checker = require('jscs');
@@ -20,17 +19,20 @@ module.exports = function (options) {
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
 			this.push(file);
-			return cb();
+			cb();
+			return;
 		}
 
 		if (file.isStream()) {
 			this.emit('error', new gutil.PluginError('gulp-jscs', 'Streaming not supported'));
-			return cb();
+			cb();
+			return;
 		}
 
 		if (checker._isExcluded(file.path)) {
 			this.push(file);
-			return cb();
+			cb();
+			return;
 		}
 
 		try {
