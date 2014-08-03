@@ -5,12 +5,17 @@ var through = require('through2');
 var Checker = require('jscs');
 var loadConfigFile = require('jscs/lib/cli-config');
 
-module.exports = function (configPath) {
+module.exports = function (options) {
 	var out = [];
 	var checker = new Checker();
 
 	checker.registerDefaultRules();
-	checker.configure(loadConfigFile.load(configPath));
+
+	if (typeof options === 'object') {
+		checker.configure(options);
+	} else {
+		checker.configure(loadConfigFile.load(options));
+	}
 
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {

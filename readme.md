@@ -38,6 +38,14 @@ Default: `'./.jscsrc'`
 
 Path to the [.jscsrc](https://github.com/mdevils/node-jscs#configuration).
 
+### jscs(options)
+
+#### options
+
+Type: `object`
+
+node-jscs [options](https://github.com/mdevils/node-jscs#options).
+
 
 ## License
 
