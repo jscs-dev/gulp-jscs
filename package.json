@@ -13,6 +13,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
+    "pretest": "jscs *.js",
     "test": "mocha"
   },
   "files": [
