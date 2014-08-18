@@ -35,7 +35,7 @@
   ],
   "dependencies": {
     "gulp-util": "^3.0.0",
-    "jscs": "^1.5.9",
+    "jscs": "^1.6.0",
     "through2": "^0.5.1"
   },
   "devDependencies": {
