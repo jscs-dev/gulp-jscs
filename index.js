@@ -44,7 +44,6 @@ module.exports = function (options) {
 			out.push(err.message.replace('null:', file.relative + ':'));
 		}
 
-		this.push(file);
 		cb();
 	}, function (cb) {
 		if (out.length > 0) {
