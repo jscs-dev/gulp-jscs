@@ -33,7 +33,7 @@ gulp.task('default', function () {
 
 #### configPath
 
-Type: `string`
+Type: `string`  
 Default: `'./.jscsrc'`
 
 Path to the [.jscsrc](https://github.com/jscs-dev/node-jscs#configuration).
