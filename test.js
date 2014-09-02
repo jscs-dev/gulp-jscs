@@ -1,7 +1,7 @@
 'use strict';
 var assert = require('assert');
 var gutil = require('gulp-util');
-var jscs = require('./index');
+var jscs = require('./');
 
 it('should check code style of JS files', function (cb) {
 	var stream = jscs();

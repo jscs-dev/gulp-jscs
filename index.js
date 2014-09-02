@@ -18,20 +18,17 @@ module.exports = function (options) {
 
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
-			this.push(file);
-			cb();
+			cb(null, file);
 			return;
 		}
 
 		if (file.isStream()) {
-			this.emit('error', new gutil.PluginError('gulp-jscs', 'Streaming not supported'));
-			cb();
+			cb(new gutil.PluginError('gulp-jscs', 'Streaming not supported'));
 			return;
 		}
 
 		if (checker._isExcluded(file.path)) {
-			this.push(file);
-			cb();
+			cb(null, file);
 			return;
 		}
 
@@ -44,8 +41,7 @@ module.exports = function (options) {
 			out.push(err.message.replace('null:', file.relative + ':'));
 		}
 
-		this.push(file);
-		cb();
+		cb(null, file);
 	}, function (cb) {
 		if (out.length > 0) {
 			this.emit('error', new gutil.PluginError('gulp-jscs', out.join('\n\n'), {
