@@ -3,7 +3,7 @@
   "version": "1.1.1",
   "description": "Check JavaScript code style with jscs",
   "license": "MIT",
-  "repository": "sindresorhus/gulp-jscs",
+  "repository": "jscs-dev/gulp-jscs",
   "author": {
     "name": "Sindre Sorhus",
     "email": "sindresorhus@gmail.com",
