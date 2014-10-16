@@ -6,12 +6,13 @@ var loadConfigFile = require('jscs/lib/cli-config');
 
 module.exports = function (options) {
 	var out = [];
-	var checker = new Checker();
+	var checker = new Checker({esnext: options && !!options.esnext});
 
 	checker.registerDefaultRules();
 
 	if (typeof options === 'object') {
 		checker.configure(options);
+		delete options.esnext;
 	} else {
 		checker.configure(loadConfigFile.load(options));
 	}

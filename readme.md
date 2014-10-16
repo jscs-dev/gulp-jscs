@@ -44,6 +44,8 @@ Type: `object`
 
 See the jscs [options](https://github.com/jscs-dev/node-jscs#options).
 
+Set `esnext: true` if you want your code to be parsed as ES6 using the harmony
+version of the esprima parser. 
 
 ## License
 
