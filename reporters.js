@@ -2,6 +2,16 @@
 var PluginError = require('gulp-util').PluginError;
 var through = require('through2');
 
+var failReporter = function (errors) {
+	if (errors.length) {
+		var errorFiles = [];
+		errors.forEach(function (error) {
+			errorFiles.push(error.getFilename());
+		});
+		throw new PluginError('gulp-jscs', 'JSCS failed for: ' + errorFiles.join(', '));
+	}
+};
+
 exports.loadReporter = function (reporter) {
 	// we want the function
 	if (typeof reporter === 'function') {
@@ -14,6 +24,11 @@ exports.loadReporter = function (reporter) {
 	}
 
 	if (typeof reporter === 'string') {
+		// load our own 'fail' reporter
+		if (reporter === 'fail') {
+			return failReporter;
+		}
+
 		// load jshint built-in reporters
 		try {
 			return exports.loadReporter(require('jscs/lib/reporters/' + reporter));
