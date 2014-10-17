@@ -3,8 +3,9 @@ var gutil = require('gulp-util');
 var through = require('through2');
 var Checker = require('jscs');
 var loadConfigFile = require('jscs/lib/cli-config');
+var reporters = require('./reporters');
 
-module.exports = function (options) {
+var jscsPlugin = function (options) {
 	var checker = new Checker({esnext: options && !!options.esnext});
 
 	checker.registerDefaultRules();
@@ -47,3 +48,9 @@ module.exports = function (options) {
 		cb(null, file);
 	});
 };
+
+// expose the reporters API
+jscsPlugin.loadReporter = reporters.loadReporter;
+jscsPlugin.reporter = reporters.reporter;
+
+module.exports = jscsPlugin;
