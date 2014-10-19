@@ -29,7 +29,7 @@ var loadReporter = function (reporter) {
 			return failReporter;
 		}
 
-		// load jshint built-in reporters
+		// load JSCS built-in reporters
 		try {
 			return loadReporter(require('jscs/lib/reporters/' + reporter));
 		} catch (err) {}
