@@ -28,8 +28,10 @@ var jscsPlugin = function (options) {
 			return;
 		}
 
+		file.jscs = {};
+
 		if (checker._isExcluded(file.path)) {
-			file.jscs = {ignored: true};
+			file.jscs.ignored = true;
 			cb(null, file);
 			return;
 		}
@@ -37,12 +39,12 @@ var jscsPlugin = function (options) {
 		try {
 			var errors = checker.checkString(file.contents.toString(), file.relative);
 			if (errors.isEmpty()) {
-				file.jscs = {success: true};
+				file.jscs.success = true;
 			} else {
-				file.jscs = {fails: errors};
+				file.jscs.fails = errors;
 			}
 		} catch (err) {
-			file.jscs = {exception: err};
+			file.jscs.exception = err;
 		}
 
 		cb(null, file);
