@@ -12,7 +12,7 @@ var failReporter = function (errors) {
 	}
 };
 
-exports.loadReporter = function (reporter) {
+var loadReporter = function (reporter) {
 	// we want the function
 	if (typeof reporter === 'function') {
 		return reporter;
@@ -31,12 +31,12 @@ exports.loadReporter = function (reporter) {
 
 		// load jshint built-in reporters
 		try {
-			return exports.loadReporter(require('jscs/lib/reporters/' + reporter));
+			return loadReporter(require('jscs/lib/reporters/' + reporter));
 		} catch (err) {}
 
 		// load full-path or module reporters
 		try {
-			return exports.loadReporter(require(reporter));
+			return loadReporter(require(reporter));
 		} catch (err) {}
 	}
 };
@@ -44,7 +44,7 @@ exports.loadReporter = function (reporter) {
 exports.reporter = function (reporterName) {
 	var errors = [];
 	var exceptionFiles = [];
-	var reporter = exports.loadReporter(reporterName || 'console');
+	var reporter = loadReporter(reporterName || 'console');
 
 	if (typeof reporter !== 'function') {
 		throw new PluginError('gulp-jscs', 'Invalid reporter');

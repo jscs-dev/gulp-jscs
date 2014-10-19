@@ -50,7 +50,6 @@ var jscsPlugin = function (options) {
 };
 
 // expose the reporters API
-jscsPlugin.loadReporter = reporters.loadReporter;
 jscsPlugin.reporter = reporters.reporter;
 
 module.exports = jscsPlugin;
