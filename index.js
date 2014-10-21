@@ -11,8 +11,8 @@ module.exports = function (options) {
 	checker.registerDefaultRules();
 
 	if (typeof options === 'object') {
-		checker.configure(options);
 		delete options.esnext;
+		checker.configure(options);
 	} else {
 		checker.configure(loadConfigFile.load(options));
 	}
