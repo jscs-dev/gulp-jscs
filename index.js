@@ -3,9 +3,9 @@ var gutil = require('gulp-util');
 var through = require('through2');
 var Checker = require('jscs');
 var loadConfigFile = require('jscs/lib/cli-config');
+var reporters = require('./reporters');
 
-module.exports = function (options) {
-	var out = [];
+var jscsPlugin = function (options) {
 	var checker = new Checker({esnext: options && !!options.esnext});
 
 	checker.registerDefaultRules();
@@ -28,28 +28,30 @@ module.exports = function (options) {
 			return;
 		}
 
+		file.jscs = {};
+
 		if (checker._isExcluded(file.path)) {
+			file.jscs.ignored = true;
 			cb(null, file);
 			return;
 		}
 
 		try {
 			var errors = checker.checkString(file.contents.toString(), file.relative);
-			errors.getErrorList().forEach(function (err) {
-				out.push(errors.explainError(err, true));
-			});
+			if (errors.isEmpty()) {
+				file.jscs.success = true;
+			} else {
+				file.jscs.fails = errors;
+			}
 		} catch (err) {
-			out.push(err.message.replace('null:', file.relative + ':'));
+			file.jscs.exception = err;
 		}
 
 		cb(null, file);
-	}, function (cb) {
-		if (out.length > 0) {
-			this.emit('error', new gutil.PluginError('gulp-jscs', out.join('\n\n'), {
-				showStack: false
-			}));
-		}
-
-		cb();
 	});
 };
+
+// expose the reporters API
+jscsPlugin.reporter = reporters.reporter;
+
+module.exports = jscsPlugin;
