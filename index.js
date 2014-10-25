@@ -15,9 +15,11 @@ function stockReporter (errorCollection) {
 		});
 	});
 
-	this.emit('error', new gutil.PluginError('gulp-jscs', out.join('\n'), {
-		showStack: false
-	}));
+	if (out.length > 0) {
+		this.emit('error', new gutil.PluginError('gulp-jscs', out.join('\n'), {
+			showStack: false
+		}));
+	}
 }
 
 function getReporter (reporter) {
@@ -85,4 +87,4 @@ module.exports = function (options, reporter) {
 
 		cb();
 	});
-}; 
+};
