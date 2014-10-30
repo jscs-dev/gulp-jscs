@@ -4,7 +4,7 @@ var through = require('through2');
 var Checker = require('jscs');
 var loadConfigFile = require('jscs/lib/cli-config');
 
-module.exports = function (options) {
+module.exports = function (options, throughOptions) {
 	var out = [];
 	var checker = new Checker({esnext: options && !!options.esnext});
 
@@ -17,7 +17,8 @@ module.exports = function (options) {
 		checker.configure(loadConfigFile.load(options));
 	}
 
-	return through.obj(function (file, enc, cb) {
+	return through.obj(throughOptions,
+    function (file, enc, cb) {
 		if (file.isNull()) {
 			cb(null, file);
 			return;
