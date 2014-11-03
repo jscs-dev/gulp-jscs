@@ -3,6 +3,7 @@ var gutil = require('gulp-util');
 var through = require('through2');
 var Checker = require('jscs');
 var loadConfigFile = require('jscs/lib/cli-config');
+var assign = require('object-assign');
 
 module.exports = function (options) {
 	var out = [];
@@ -11,6 +12,7 @@ module.exports = function (options) {
 	checker.registerDefaultRules();
 
 	if (typeof options === 'object') {
+		options = assign({}, options);
 		delete options.esnext;
 		checker.configure(options);
 	} else {

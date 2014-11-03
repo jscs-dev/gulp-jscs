@@ -86,3 +86,8 @@ it('should respect "excludeFiles" from config', function (cb) {
 	stream.end();
 });
 
+it('should not mutate the options object passed as argument', function () {
+	var options = {esnext: true};
+	jscs(options);
+	assert.equal(options.esnext, true);
+});
