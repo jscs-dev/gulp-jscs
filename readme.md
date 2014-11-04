@@ -43,9 +43,10 @@ Path to the [.jscsrc](https://github.com/jscs-dev/node-jscs#configuration).
 Type: `object`
 
 See the jscs [options](https://github.com/jscs-dev/node-jscs#options).
+You may instead set a `configPath: 'path/to/.jscsrc'` option.
 
 Set `esnext: true` if you want your code to be parsed as ES6 using the harmony
-version of the esprima parser. 
+version of the esprima parser.
 
 ## License
 
