@@ -106,6 +106,10 @@ it('should accept both esnext and configPath options', function(cb) {
 	stream.end();
 });
 
+it('should throw when passing both configPath and code style options', function() {
+	assert.throws(jscs.bind(null, {configPath: '.jscsrc', preset: 'airbnb'}), /configPath/);
+});
+
 it('should not mutate the options object passed as argument', function () {
 	var options = {esnext: true};
 	jscs(options);

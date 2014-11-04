@@ -25,7 +25,7 @@ module.exports = function (options) {
 
 	if (configPath) {
 		if (Object.keys(options).length) {
-			throw new Error('Specify either configPath or jscs options');
+			throw new Error('configPath option is not compatible with code style options');
 		}
 		checker.configure(loadConfigFile.load(configPath));
 	} else {
