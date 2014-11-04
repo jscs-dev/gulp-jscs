@@ -6,17 +6,30 @@ var loadConfigFile = require('jscs/lib/cli-config');
 var assign = require('object-assign');
 
 module.exports = function (options) {
+	if (!options) {
+		options = './.jscsrc';
+	}
+	if (typeof options === 'string') {
+		options = {configPath: options};
+	}
+	options = assign({esnext: false}, options);
+
 	var out = [];
-	var checker = new Checker({esnext: options && !!options.esnext});
+	var checker = new Checker({esnext: !!options.esnext});
 
 	checker.registerDefaultRules();
 
-	if (typeof options === 'object') {
-		options = assign({}, options);
-		delete options.esnext;
-		checker.configure(options);
+	var configPath = options.configPath;
+	delete options.esnext;
+	delete options.configPath;
+
+	if (configPath) {
+		if (Object.keys(options).length) {
+			throw new Error('Specify either configPath or jscs options');
+		}
+		checker.configure(loadConfigFile.load(configPath));
 	} else {
-		checker.configure(loadConfigFile.load(options));
+		checker.configure(options);
 	}
 
 	return through.obj(function (file, enc, cb) {

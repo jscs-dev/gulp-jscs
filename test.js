@@ -86,6 +86,26 @@ it('should respect "excludeFiles" from config', function (cb) {
 	stream.end();
 });
 
+it('should accept both esnext and configPath options', function(cb) {
+	var stream = jscs({
+		esnext: true,
+		configPath: '.jscsrc'
+	});
+
+	stream.on('error', function (err) {
+		assert(!/Unexpected reserved word/.test(err) && /Multiple var declaration/.test(err));
+		cb();
+	});
+
+	stream.write(new gutil.File({
+		base: __dirname,
+		path: __dirname + '/fixture.js',
+		contents: new Buffer('import x from \'x\'; var x = 1, y = 2;')
+	}));
+
+	stream.end();
+});
+
 it('should not mutate the options object passed as argument', function () {
 	var options = {esnext: true};
 	jscs(options);
