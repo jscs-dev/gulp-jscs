@@ -5,8 +5,46 @@ var Checker = require('jscs');
 var loadConfigFile = require('jscs/lib/cli-config');
 var assign = require('object-assign');
 
-module.exports = function (options) {
+var fs = require('fs');
+var path = require('path');
+
+function stockReporter (errorCollection) {
 	var out = [];
+	errorCollection.forEach(function (errors) {
+		errors.getErrorList().forEach(function (err) {
+			out.push(errors.explainError(err, true) + '\n');
+		});
+	});
+
+	if (out.length > 0) {
+		this.emit('error', new gutil.PluginError('gulp-jscs', out.join('\n'), {
+			showStack: false
+		}));
+	}
+}
+
+function getReporter (reporter) {
+	if (typeof reporter === 'string') {
+		var reporterPath = path.resolve(process.cwd(), reporter);
+
+		if (!fs.existsSync(reporterPath)) {
+			reporterPath = 'jscs/lib/reporters/' + reporter;
+		}
+		try {
+			return require(reporterPath);
+		} catch (e) {
+			console.error('Reporter "%s" doesn\'t exist.', reporterPath);
+			return;
+		}
+	}
+
+	return typeof reporter === 'function' ?
+			reporter :
+			stockReporter;
+}
+
+module.exports = function (options, reporter) {
+	var errorCollection = [];
 	var checker = new Checker({esnext: options && !!options.esnext});
 
 	checker.registerDefaultRules();
@@ -37,20 +75,17 @@ module.exports = function (options) {
 
 		try {
 			var errors = checker.checkString(file.contents.toString(), file.relative);
-			errors.getErrorList().forEach(function (err) {
-				out.push(errors.explainError(err, true));
-			});
+			if (errors.getErrorCount() > 0) {
+				errors.filePath = file.path;
+				errorCollection.push(errors);
+			}
 		} catch (err) {
-			out.push(err.message.replace('null:', file.relative + ':'));
+			console.error(err.message.replace('null:', file.relative + ':'));
 		}
 
 		cb(null, file);
 	}, function (cb) {
-		if (out.length > 0) {
-			this.emit('error', new gutil.PluginError('gulp-jscs', out.join('\n\n'), {
-				showStack: false
-			}));
-		}
+		getReporter(reporter).call(this, errorCollection);
 
 		cb();
 	});
