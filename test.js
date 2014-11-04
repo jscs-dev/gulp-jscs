@@ -31,7 +31,7 @@ it('should check code style of JS files', function (cb) {
 it('should check code style of JS files using a preset', function (cb) {
 	var stream = jscs({preset: 'google'});
 
-	stream.on('error', function (err) {
+	stream.once('error', function (err) {
 		if (/Missing line feed at file end/.test(err)) {
 			assert(true);
 			cb();
@@ -92,7 +92,7 @@ it('should accept both esnext and configPath options', function(cb) {
 		configPath: '.jscsrc'
 	});
 
-	stream.on('error', function (err) {
+	stream.once('error', function (err) {
 		assert(!/Unexpected reserved word/.test(err) && /Multiple var declaration/.test(err));
 		cb();
 	});
@@ -106,8 +106,11 @@ it('should accept both esnext and configPath options', function(cb) {
 	stream.end();
 });
 
-it('should throw when passing both configPath and code style options', function() {
-	assert.throws(jscs.bind(null, {configPath: '.jscsrc', preset: 'airbnb'}), /configPath/);
+it('should throw when passing both configPath and code style options', function () {
+	assert.throws(jscs.bind(null, {
+		configPath: '.jscsrc',
+		preset: 'airbnb'
+	}), /configPath/);
 });
 
 it('should not mutate the options object passed as argument', function () {

@@ -6,12 +6,12 @@ var loadConfigFile = require('jscs/lib/cli-config');
 var assign = require('object-assign');
 
 module.exports = function (options) {
-	if (!options) {
-		options = './.jscsrc';
-	}
+	options = options || '.jscsrc';
+
 	if (typeof options === 'string') {
 		options = {configPath: options};
 	}
+
 	options = assign({esnext: false}, options);
 
 	var out = [];
@@ -27,6 +27,7 @@ module.exports = function (options) {
 		if (Object.keys(options).length) {
 			throw new Error('configPath option is not compatible with code style options');
 		}
+
 		checker.configure(loadConfigFile.load(configPath));
 	} else {
 		checker.configure(options);

@@ -1,4 +1,4 @@
-# [gulp](http://gulpjs.com)-jscs [![Build Status](https://travis-ci.org/jscs-dev/gulp-jscs.svg?branch=master)](https://travis-ci.org/jscs-dev/gulp-jscs)
+# gulp-jscs [![Build Status](https://travis-ci.org/jscs-dev/gulp-jscs.svg?branch=master)](https://travis-ci.org/jscs-dev/gulp-jscs)
 
 > Check JavaScript code style with [jscs](https://github.com/jscs-dev/node-jscs)
 
@@ -29,24 +29,19 @@ gulp.task('default', function () {
 
 ## API
 
-### jscs(configPath | options)
-
-#### configPath
-
-Type: `string`  
-Default: `'./.jscsrc'`
-
-Path to the [.jscsrc](https://github.com/jscs-dev/node-jscs#configuration).
+### jscs(options)
 
 #### options
 
 Type: `object`
 
 See the jscs [options](https://github.com/jscs-dev/node-jscs#options).
-You may instead set a `configPath: 'path/to/.jscsrc'` option.
+
+Alternatively you can set the `configPath` *(default: `'.jscsrc'`)* option to the path of a [.jscsrc](https://github.com/jscs-dev/node-jscs#configuration) file.
 
 Set `esnext: true` if you want your code to be parsed as ES6 using the harmony
 version of the esprima parser.
+
 
 ## License
 
