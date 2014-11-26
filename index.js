@@ -44,7 +44,7 @@ module.exports = function (options) {
 			return;
 		}
 
-		if (checker._isExcluded(file.path)) {
+		if (checker.getConfiguration().isFileExcluded(file.path)) {
 			cb(null, file);
 			return;
 		}
