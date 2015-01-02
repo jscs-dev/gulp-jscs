@@ -4,6 +4,7 @@ var gutil = require('gulp-util');
 var jscs = require('./');
 
 it('should check code style of JS files', function (cb) {
+	this.timeout(5000);
 	var stream = jscs();
 
 	stream.on('error', function (err) {
