@@ -32,16 +32,19 @@ gulp.task('default', function () {
 A `jscs` object will be attached to the file object which can be used for custom error reporting. An example with one error might look like this:
 
 ```js
-{ success: false,  // or true if no errors
-  errorCount: 1,   // number of errors in the errors array
-  errors: [        // an array of jscs error objects
-    { filename: 'index.js',  // basename of the file
-      rule: 'requireCamelCaseOrUpperCaseIdentifiers',  // jscs rule which triggered the error
-      message: 'All identifiers must be camelCase or UPPER_CASE',  // error message returned by the rule
-      line: 32,    // error line number
-      column: 7 }  // error column
-  ]};
+{
+	success: false,  // or true if no errors
+	errorCount: 1,   // number of errors in the errors array
+	errors: [{       // an array of jscs error objects
+		filename: 'index.js',  // basename of the file
+		rule: 'requireCamelCaseOrUpperCaseIdentifiers',  // the rule which triggered the error
+		message: 'All identifiers must be camelCase or UPPER_CASE',  // error message
+		line: 32,  // error line number
+		column: 7  // error column
+	}]
+};
 ```
+
 
 ## API
 

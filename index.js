@@ -52,12 +52,19 @@ module.exports = function (options) {
 		try {
 			var errors = checker.checkString(file.contents.toString(), file.relative);
 			var errorList = errors.getErrorList();
-			file.jscs = {success: true, errorCount: 0, errors: []};
+
+			file.jscs = {
+				success: true,
+				errorCount: 0,
+				errors: []
+			};
+
 			if (errorList.length > 0) {
 				file.jscs.success = false;
 				file.jscs.errorCount = errorList.length;
 				file.jscs.errors = errorList;
 			}
+
 			errorList.forEach(function (err) {
 				out.push(errors.explainError(err, true));
 			});
