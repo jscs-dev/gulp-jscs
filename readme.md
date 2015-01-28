@@ -1,6 +1,6 @@
 # gulp-jscs [![Build Status](https://travis-ci.org/jscs-dev/gulp-jscs.svg?branch=master)](https://travis-ci.org/jscs-dev/gulp-jscs)
 
-> Check JavaScript code style with [jscs](https://github.com/jscs-dev/node-jscs)
+> Check JavaScript code style with [jscs](http://jscs.info)
 
 ![](screenshot.png)
 
@@ -54,9 +54,9 @@ A `jscs` object will be attached to the file object which can be used for custom
 
 Type: `object`
 
-See the jscs [options](https://github.com/jscs-dev/node-jscs#options).
+See the jscs [options](http://jscs.info/overview.html#options).
 
-Alternatively you can set the `configPath` *(default: `'.jscsrc'`)* option to the path of a [.jscsrc](https://github.com/jscs-dev/node-jscs#configuration) file.
+Alternatively you can set the `configPath` *(default: `'.jscsrc'`)* option to the path of a [.jscsrc](http://jscs.info/rules.html) file.
 
 Set `esnext: true` if you want your code to be parsed as ES6 using the harmony
 version of the esprima parser.
