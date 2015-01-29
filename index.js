@@ -69,7 +69,7 @@ module.exports = function (options) {
 				out.push(errors.explainError(err, true));
 			});
 		} catch (err) {
-			out.push(err.message.replace('null:', file.relative + ':'));
+			out.push(err.stack.replace('null:', file.relative + ':'));
 		}
 
 		cb(null, file);
