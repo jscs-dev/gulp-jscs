@@ -69,7 +69,7 @@ it('should pass valid files', function (cb) {
 	var stream = jscs();
 
 	stream.pipe(jscs.reporter()).pipe(jscs.reporter('fail')).on('error', function (err) {
-		assert(false);
+		assert(false, err);
 	}).on('end', cb).resume();
 
 	stream.write(new gutil.File({
