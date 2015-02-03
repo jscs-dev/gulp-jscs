@@ -15,8 +15,7 @@ exports.loadReporter = function (reporter) {
 	// load JSCS built-in or full-path or module reporters
 	if (typeof reporter === 'string' || !reporter) {
 		try {
-			var rpt = getReporter(reporter);
-			return rpt.writer || rpt;
+			return getReporter(reporter).writer;
 		} catch (err) {}
 	}
 };
