@@ -20,7 +20,7 @@ module.exports = function (opts) {
 		// buffer or pass downstream
 		(buffer || this).push(file);
 		cb();
-	}, function () {
+	}, function (cb) {
 		if (fails) {
 			this.emit('error', new PluginError('gulp-jscs', {
 				message: 'JSCS failed for: ' + fails.join(', '),
@@ -34,5 +34,7 @@ module.exports = function (opts) {
 				this.push(file);
 			}, this);
 		}
+
+		cb();
 	});
 };

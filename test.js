@@ -3,16 +3,33 @@ var assert = require('assert');
 var gutil = require('gulp-util');
 var jscs = require('./');
 
+var stdoutWrite = process.stdout.write;
+var stdoutStub;
+
+function stubStdout() {
+	stdoutStub = '';
+	process.stdout.write = function(str) {
+		stdoutStub += str;
+	};
+}
+
+function teardown() {
+	process.stdout.write = stdoutWrite;
+}
+
+// in case test fails due to timeout
+afterEach(teardown);
+
 it('should check code style of JS files', function (cb) {
+	stubStdout();
 	this.timeout(5000);
 	var stream = jscs();
 
-	stream.on('error', function (err) {
-		if (/Illegal space before/.test(err) && /Multiple var declaration/.test(err)) {
-			assert(true);
-			cb();
-		}
-	});
+	stream.pipe(jscs.reporter()).pipe(jscs.reporter('fail')).on('error', function (err) {
+		assert(/Illegal space before/.test(stdoutStub) && /Multiple var declaration/.test(stdoutStub));
+		teardown();
+		cb();
+	}).resume();
 
 	stream.write(new gutil.File({
 		base: __dirname,
@@ -30,14 +47,14 @@ it('should check code style of JS files', function (cb) {
 });
 
 it('should check code style of JS files using a preset', function (cb) {
+	stubStdout();
 	var stream = jscs({preset: 'google'});
 
-	stream.once('error', function (err) {
-		if (/Missing line feed at file end/.test(err)) {
-			assert(true);
-			cb();
-		}
-	});
+	stream.pipe(jscs.reporter()).pipe(jscs.reporter('fail')).once('error', function (err) {
+		assert(/Missing line feed at file end/.test(stdoutStub));
+		teardown();
+		cb();
+	}).resume();
 
 	stream.write(new gutil.File({
 		base: __dirname,
@@ -51,13 +68,9 @@ it('should check code style of JS files using a preset', function (cb) {
 it('should pass valid files', function (cb) {
 	var stream = jscs();
 
-	stream.on('data', function () {});
-
-	stream.on('error', function (err) {
+	stream.pipe(jscs.reporter()).pipe(jscs.reporter('fail')).on('error', function (err) {
 		assert(false);
-	});
-
-	stream.on('end', cb);
+	}).on('end', cb).resume();
 
 	stream.write(new gutil.File({
 		path: __dirname + '/fixture.js',
@@ -70,13 +83,9 @@ it('should pass valid files', function (cb) {
 it('should respect "excludeFiles" from config', function (cb) {
 	var stream = jscs();
 
-	stream.on('data', function () {});
-
-	stream.on('error', function (err) {
-		assert(!err, err);
-	});
-
-	stream.on('end', cb);
+	stream.pipe(jscs.reporter()).pipe(jscs.reporter('fail')).on('error', function (err) {
+		assert(false, err);
+	}).on('end', cb).resume();
 
 	stream.write(new gutil.File({
 		base: __dirname,
@@ -88,15 +97,17 @@ it('should respect "excludeFiles" from config', function (cb) {
 });
 
 it('should accept both esnext and configPath options', function(cb) {
+	stubStdout();
 	var stream = jscs({
 		esnext: true,
 		configPath: '.jscsrc'
 	});
 
-	stream.once('error', function (err) {
-		assert(!/Unexpected reserved word/.test(err) && /Multiple var declaration/.test(err));
+	stream.pipe(jscs.reporter()).pipe(jscs.reporter('fail')).once('error', function (err) {
+		assert(!/Unexpected reserved word/.test(stdoutStub) && /Multiple var declaration/.test(stdoutStub));
+		teardown();
 		cb();
-	});
+	}).resume();
 
 	stream.write(new gutil.File({
 		base: __dirname,
