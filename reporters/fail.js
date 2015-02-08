@@ -5,10 +5,10 @@ var through = require('through2');
 module.exports = function (opts) {
 	opts = opts || {};
 
-	// @type false|[]paths - paths to files that failed JSCS
+	// paths to files that failed JSCS
 	var fails = false;
 
-	// @type false|[]files - files that need to be passed downstream on flush
+	// files that need to be passed downstream on flush
 	var buffer = opts.buffer !== false ? [] : false;
 
 	return through.obj(function (file, enc, cb) {

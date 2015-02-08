@@ -1,33 +1,17 @@
 'use strict';
-var getReporter = require('jscs/lib/cli-config').getReporter;
 var PluginError = require('gulp-util').PluginError;
 var through = require('through2');
+var loadReporter = require('./loadReporter');
+var failReporter = require('./fail');
 
-exports.failReporter = require('./fail');
-
-exports.loadReporter = function (reporter) {
-	// we want the function
-	if (typeof reporter === 'function') return reporter;
-
-	// object reporters
-	if (typeof reporter === 'object' && typeof reporter.reporter === 'function') return reporter.reporter;
-
-	// load JSCS built-in or full-path or module reporters
-	if (typeof reporter === 'string' || !reporter) {
-		try {
-			return getReporter(reporter).writer;
-		} catch (err) {}
-	}
-};
-
-exports.reporter = function (reporter, reporterCfg) {
+module.exports = function (reporter, reporterCfg) {
 	reporterCfg = reporterCfg || {};
 
 	if (reporter === 'fail') {
-		return exports.failReporter(reporterCfg);
+		return failReporter(reporterCfg);
 	}
 
-	var rpt = exports.loadReporter(reporter);
+	var rpt = loadReporter(reporter);
 
 	if (typeof rpt !== 'function') {
 		throw new PluginError('gulp-jscs', 'Invalid reporter');

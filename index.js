@@ -8,7 +8,7 @@ var assign = require('object-assign');
 var tildify = require('tildify');
 var reporters = require('./reporters');
 
-module.exports = exports = function (options) {
+var plugin = module.exports = function (options) {
 	options = options || '.jscsrc';
 
 	if (typeof options === 'string') {
@@ -93,6 +93,4 @@ module.exports = exports = function (options) {
 	});
 };
 
-exports.failReporter = reporters.fail;
-exports.loadReporter = reporters.loadReporter;
-exports.reporter = reporters.reporter;
+plugin.reporter = reporter;
