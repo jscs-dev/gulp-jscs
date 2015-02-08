@@ -25,11 +25,11 @@ it('should check code style of JS files', function (cb) {
 	var stream = jscs();
 
 	stream
-		.pipe(streamAssert.first(function(file) {
+		.pipe(streamAssert.first(function (file) {
 			var errors = file.jscs.errors;
 			assert(/Multiple var declaration/.test(errors.explainError(errors.getErrorList()[0], false)));
 		}))
-		.pipe(streamAssert.second(function(file) {
+		.pipe(streamAssert.second(function (file) {
 			var errors = file.jscs.errors;
 			assert(/Illegal space before/.test(errors.explainError(errors.getErrorList()[1], false)));
 		}))
@@ -54,7 +54,7 @@ it('should check code style of JS files using a preset', function (cb) {
 	var stream = jscs({preset: 'google'});
 
 	stream
-		.pipe(streamAssert.first(function(file) {
+		.pipe(streamAssert.first(function (file) {
 			var errors = file.jscs.errors;
 			assert(/Missing line feed at file end/.test(errors.explainError(errors.getErrorList()[1], false)));
 		}))
@@ -107,7 +107,7 @@ it('should accept both esnext and configPath options', function(cb) {
 	});
 
 	stream
-		.pipe(streamAssert.first(function(file) {
+		.pipe(streamAssert.first(function (file) {
 			var errors = file.jscs.errors;
 			var errorList = errors.getErrorList();
 			assert(errorList.length === 1 && /Multiple var declaration/.test(errors.explainError(errorList[0], false)));
