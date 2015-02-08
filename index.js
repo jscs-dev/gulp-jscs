@@ -59,34 +59,30 @@ var plugin = module.exports = function (options) {
 			return;
 		}
 
-		try {
-			var fixResults;
-			var errors;
-			var contents = file.contents.toString();
+		var fixResults;
+		var errors;
+		var contents = file.contents.toString();
 
-			if (shouldFix) {
-				fixResults = checker.fixString(contents, file.relative);
-				errors = fixResults.errors;
-				file.contents = new Buffer(fixResults.output);
-			} else {
-				errors = checker.checkString(contents, file.relative);
-			}
+		if (shouldFix) {
+			fixResults = checker.fixString(contents, file.relative);
+			errors = fixResults.errors;
+			file.contents = new Buffer(fixResults.output);
+		} else {
+			errors = checker.checkString(contents, file.relative);
+		}
 
-			var errorList = errors.getErrorList();
+		var errorList = errors.getErrorList();
 
-			file.jscs = {
-				success: true,
-				errorCount: 0,
-				errors: []
-			};
+		file.jscs = {
+			success: true,
+			errorCount: 0,
+			errors: []
+		};
 
-			if (errorList.length > 0) {
-				file.jscs.success = false;
-				file.jscs.errorCount = errorList.length;
-				file.jscs.errors = errors;
-			}
-		} catch (err) {
-			console.error(err.stack.replace('null:', file.relative + ':'));
+		if (errorList.length > 0) {
+			file.jscs.success = false;
+			file.jscs.errorCount = errorList.length;
+			file.jscs.errors = errors;
 		}
 
 		cb(null, file);
