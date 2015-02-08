@@ -2,6 +2,7 @@
 var assert = require('assert');
 var gutil = require('gulp-util');
 var jscs = require('./');
+var streamAssert = require('stream-assert');
 
 var stdoutWrite = process.stdout.write;
 var stdoutStub;
@@ -21,15 +22,18 @@ function teardown() {
 afterEach(teardown);
 
 it('should check code style of JS files', function (cb) {
-	stubStdout();
-	this.timeout(5000);
 	var stream = jscs();
 
-	stream.pipe(jscs.reporter()).pipe(jscs.reporter('fail')).on('error', function (err) {
-		assert(/Illegal space before/.test(stdoutStub) && /Multiple var declaration/.test(stdoutStub));
-		teardown();
-		cb();
-	}).resume();
+	stream
+		.pipe(streamAssert.first(function(file) {
+			var errors = file.jscs.errors;
+			assert(/Multiple var declaration/.test(errors.explainError(errors.getErrorList()[0], false)));
+		}))
+		.pipe(streamAssert.second(function(file) {
+			var errors = file.jscs.errors;
+			assert(/Illegal space before/.test(errors.explainError(errors.getErrorList()[1], false)));
+		}))
+		.pipe(streamAssert.end(cb));
 
 	stream.write(new gutil.File({
 		base: __dirname,
@@ -47,14 +51,14 @@ it('should check code style of JS files', function (cb) {
 });
 
 it('should check code style of JS files using a preset', function (cb) {
-	stubStdout();
 	var stream = jscs({preset: 'google'});
 
-	stream.pipe(jscs.reporter()).pipe(jscs.reporter('fail')).once('error', function (err) {
-		assert(/Missing line feed at file end/.test(stdoutStub));
-		teardown();
-		cb();
-	}).resume();
+	stream
+		.pipe(streamAssert.first(function(file) {
+			var errors = file.jscs.errors;
+			assert(/Missing line feed at file end/.test(errors.explainError(errors.getErrorList()[1], false)));
+		}))
+		.pipe(streamAssert.end(cb));
 
 	stream.write(new gutil.File({
 		base: __dirname,
@@ -97,17 +101,18 @@ it('should respect "excludeFiles" from config', function (cb) {
 });
 
 it('should accept both esnext and configPath options', function(cb) {
-	stubStdout();
 	var stream = jscs({
 		esnext: true,
 		configPath: '.jscsrc'
 	});
 
-	stream.pipe(jscs.reporter()).pipe(jscs.reporter('fail')).once('error', function (err) {
-		assert(!/Unexpected reserved word/.test(stdoutStub) && /Multiple var declaration/.test(stdoutStub));
-		teardown();
-		cb();
-	}).resume();
+	stream
+		.pipe(streamAssert.first(function(file) {
+			var errors = file.jscs.errors;
+			var errorList = errors.getErrorList();
+			assert(errorList.length === 1 && /Multiple var declaration/.test(errors.explainError(errorList[0], false)));
+		}))
+		.pipe(streamAssert.end(cb));
 
 	stream.write(new gutil.File({
 		base: __dirname,
@@ -196,7 +201,8 @@ describe('Reporter', function () {
 	it('`fail` reporter should throw an error', function (cb) {
 		var stream = jscs();
 
-		stream.pipe(jscs.reporter('fail')).on('error', function (/* some args here so can't pass cb directly */) {
+		stream.pipe(jscs.reporter('fail')).on('error', function (err) {
+			assert(err instanceof Error && /JSCS/.test(err.message));
 			cb();
 		}).resume();
 

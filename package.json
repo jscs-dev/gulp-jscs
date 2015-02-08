@@ -41,6 +41,7 @@
     "tildify": "^1.0.0"
   },
   "devDependencies": {
-    "mocha": "*"
+    "mocha": "*",
+    "stream-assert": "^2.0.2"
   }
 }
