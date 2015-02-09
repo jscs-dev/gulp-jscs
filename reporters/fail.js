@@ -2,14 +2,9 @@
 var PluginError = require('gulp-util').PluginError;
 var through = require('through2');
 
-module.exports = function (opts) {
-	opts = opts || {};
-
+module.exports = function () {
 	// paths to files that failed JSCS
 	var fails = false;
-
-	// files that need to be passed downstream on flush
-	var buffer = opts.buffer !== false ? [] : false;
 
 	return through.obj(function (file, enc, cb) {
 		// check for failure
@@ -17,8 +12,7 @@ module.exports = function (opts) {
 			(fails = fails || []).push(file.path);
 		}
 
-		// buffer or pass downstream
-		(buffer || this).push(file);
+		this.push(file);
 		cb();
 	}, function (cb) {
 		if (fails) {
@@ -26,13 +20,6 @@ module.exports = function (opts) {
 				message: 'JSCS failed for: ' + fails.join(', '),
 				showStack: false
 			}));
-		}
-
-		if (buffer) {
-			// send the buffered files downstream
-			buffer.forEach(function (file) {
-				this.push(file);
-			}, this);
 		}
 
 		cb();

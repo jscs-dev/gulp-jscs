@@ -4,11 +4,9 @@ var through = require('through2');
 var loadReporter = require('./loadReporter');
 var failReporter = require('./fail');
 
-module.exports = function (reporter, reporterCfg) {
-	reporterCfg = reporterCfg || {};
-
+module.exports = function (reporter) {
 	if (reporter === 'fail') {
-		return failReporter(reporterCfg);
+		return failReporter();
 	}
 
 	var rpt = loadReporter(reporter);
