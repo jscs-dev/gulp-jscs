@@ -34,10 +34,10 @@
     "checker"
   ],
   "dependencies": {
-    "gulp-util": "^3.0.0",
-    "jscs": "^1.8.0",
+    "gulp-util": "^3.0.3",
+    "jscs": "^1.11.1",
     "object-assign": "^2.0.0",
-    "through2": "^0.6.1"
+    "through2": "^0.6.3"
   },
   "devDependencies": {
     "mocha": "*"
