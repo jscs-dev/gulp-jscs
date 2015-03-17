@@ -73,7 +73,9 @@ Type: `object`
 
 See the `jscs` [options](http://jscs.info/overview.html#options).
 
-Alternatively you can set the `configPath` *(default: `'.jscsrc'`)* option to the path of a [.jscsrc](http://jscs.info/rules.html) file.
+Alternatively you can set the `configPath` *(default: `'.jscsrc'`)* option to the path of a [.jscsrc](http://jscs.info/rules.html) file, or if no
+argument is passed the first `.jscsrc` file found will be used, starting with current working directory then searching ancestor directories until
+the system root is reached.
 
 Set `esnext: true` if you want your code to be parsed as ES6 using the harmony
 version of the esprima parser.

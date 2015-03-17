@@ -8,8 +8,6 @@ var assign = require('object-assign');
 var tildify = require('tildify');
 
 module.exports = function (options) {
-	options = options || '.jscsrc';
-
 	if (typeof options === 'string') {
 		options = {configPath: options};
 	}
@@ -39,8 +37,10 @@ module.exports = function (options) {
 			err.message = 'Unable to load JSCS config file at ' + tildify(path.resolve(configPath)) + '\n' + err.message;
 			throw err;
 		}
-	} else {
+	} else if (JSON.stringify(options) !== '{}') {
 		checker.configure(options);
+	} else {
+		checker.configure(loadConfigFile.load());
 	}
 
 	return through.obj(function (file, enc, cb) {
