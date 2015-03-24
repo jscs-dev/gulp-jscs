@@ -24,7 +24,7 @@ module.exports = function (options) {
 	delete options.configPath;
 
 	if (configPath) {
-		if (Object.keys(options).length) {
+		if (typeof options === 'object' && Object.keys(options).length) {
 			throw new Error('configPath option is not compatible with code style options');
 		}
 
