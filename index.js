@@ -32,8 +32,7 @@ module.exports = function (options) {
 			checker.configure(loadConfigFile.load(configPath));
 		} catch (error) {
 			throw new Error(
-				'Unable to load JSCS config file at ' + 
-				process.cwd().concat('/').concat(configPath)
+				'Unable to load JSCS config file at ' + path.join(process.cwd(), configPath);
 			);
 		}
 	} else {
