@@ -24,11 +24,15 @@ module.exports = function (options) {
 	delete options.configPath;
 
 	if (configPath) {
-		if (Object.keys(options).length) {
+		if (typeof options === 'object' && Object.keys(options).length) {
 			throw new Error('configPath option is not compatible with code style options');
 		}
 
-		checker.configure(loadConfigFile.load(configPath));
+		try {
+			checker.configure(loadConfigFile.load(configPath));
+		} catch (error) {
+			throw new Error('Unable to load JSCS config file at ' + path.join(process.cwd(), configPath));
+		}
 	} else {
 		checker.configure(options);
 	}
