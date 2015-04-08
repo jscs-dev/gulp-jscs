@@ -37,7 +37,8 @@
     "gulp-util": "^3.0.0",
     "jscs": "^1.8.0",
     "object-assign": "^2.0.0",
-    "through2": "^0.6.1"
+    "through2": "^0.6.1",
+    "tildify": "^1.0.0"
   },
   "devDependencies": {
     "mocha": "*"

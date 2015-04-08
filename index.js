@@ -1,10 +1,11 @@
 'use strict';
-var gutil = require('gulp-util');
 var path = require('path');
+var gutil = require('gulp-util');
 var through = require('through2');
 var Checker = require('jscs');
 var loadConfigFile = require('jscs/lib/cli-config');
 var assign = require('object-assign');
+var tildify = require('tildify');
 
 module.exports = function (options) {
 	options = options || '.jscsrc';
@@ -32,7 +33,7 @@ module.exports = function (options) {
 		try {
 			checker.configure(loadConfigFile.load(configPath));
 		} catch (error) {
-			throw new Error('Unable to load JSCS config file at ' + path.join(process.cwd(), configPath));
+			throw new Error('Unable to load JSCS config file at ' + tildify(path.resolve(configPath)));
 		}
 	} else {
 		checker.configure(options);
