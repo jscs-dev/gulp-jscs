@@ -107,6 +107,29 @@ it('should accept both esnext and configPath options', function(cb) {
 	stream.end();
 });
 
+it('should accept the fix option', function (cb) {
+	var data = '';
+
+	var stream = jscs({
+		fix: true,
+		configPath: '.jscsrc'
+	});
+
+	stream.on('data', function (file) {
+		assert.equal(file.contents.toString(), 'var x = {a: 1, b: 2}');
+	});
+
+	stream.on('end', cb);
+
+	stream.write(new gutil.File({
+		base: __dirname,
+		path: __dirname + '/fixture.js',
+		contents: new Buffer('var x = { a: 1, b: 2 }')
+	}));
+
+	stream.end();
+});
+
 it('should throw when passing both configPath and code style options', function () {
 	assert.throws(jscs.bind(null, {
 		configPath: '.jscsrc',
