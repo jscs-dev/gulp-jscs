@@ -62,17 +62,12 @@ module.exports = function (options) {
 		try {
 			var fixResults;
 			var errors;
-			var changed = false;
 			var contents = file.contents.toString();
 
 			if (shouldFix) {
 				fixResults = checker.fixString(contents, file.relative);
 				errors = fixResults.errors;
-				changed = contents !== fixResults.output;
-
-				if (changed) {
-					file.contents = new Buffer(fixResults.output);
-				}
+				file.contents = new Buffer(fixResults.output);
 			} else {
 				errors = checker.checkString(contents, file.relative);
 			}
@@ -80,7 +75,6 @@ module.exports = function (options) {
 			var errorList = errors.getErrorList();
 
 			file.jscs = {
-				fixed: changed,
 				success: true,
 				errorCount: 0,
 				errors: []

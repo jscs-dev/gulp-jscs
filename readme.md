@@ -43,26 +43,6 @@ gulp.task('default', function () {
 });
 ```
 
-By default, this will cause all your files to be rewritten each time this task runs. If you'd like to only write fixed files, use `gulp-filter`:
-
-```js
-var gulp = require('gulp');
-var jscs = require('gulp-jscs');
-var filter = require('gulp-filter');
-
-gulp.task('default', function () {
-	var fixedFilter = filter(function (file) {
-		return file.jscs && file.jscs.fixed === true;
-	});
-	return gulp.src('src/**/*.js')
-		.pipe(jscs({
-			fix: true
-		}))
-		.pipe(fixedFilter)
-		.pipe(gulp.dest('src'));
-});
-```
-
 ## Results
 
 A `jscs` object will be attached to the file object which can be used for custom error reporting. An example with one error might look like this:
@@ -70,7 +50,6 @@ A `jscs` object will be attached to the file object which can be used for custom
 ```js
 {
 	success: false,  // or true if no errors
-	fixed: false,    // or true if fix option is on and file was changed
 	errorCount: 1,   // number of errors in the errors array
 	errors: [{       // an array of jscs error objects
 		filename: 'index.js',  // basename of the file
