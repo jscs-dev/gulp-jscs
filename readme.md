@@ -16,6 +16,8 @@ $ npm install --save-dev gulp-jscs
 
 ## Usage
 
+### Reporting Only
+
 ```js
 var gulp = require('gulp');
 var jscs = require('gulp-jscs');
@@ -26,6 +28,20 @@ gulp.task('default', function () {
 });
 ```
 
+### Fixing and Reporting
+
+```js
+var gulp = require('gulp');
+var jscs = require('gulp-jscs');
+
+gulp.task('default', function () {
+	return gulp.src('src/app.js')
+		.pipe(jscs({
+			fix: true
+		}))
+		.pipe(gulp.dest('src'));
+});
+```
 
 ## Results
 
@@ -60,6 +76,8 @@ Alternatively you can set the `configPath` *(default: `'.jscsrc'`)* option to th
 
 Set `esnext: true` if you want your code to be parsed as ES6 using the harmony
 version of the esprima parser.
+
+Set `fix: true` if you want jscs to attempt to auto-fix your files. Be sure to pipe to `gulp.dest` if you use this option.
 
 
 ## License

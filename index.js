@@ -22,8 +22,11 @@ module.exports = function (options) {
 	checker.registerDefaultRules();
 
 	var configPath = options.configPath;
+	var shouldFix = options.fix;
+
 	delete options.esnext;
 	delete options.configPath;
+	delete options.fix;
 
 	if (configPath) {
 		if (typeof options === 'object' && Object.keys(options).length) {
@@ -57,7 +60,18 @@ module.exports = function (options) {
 		}
 
 		try {
-			var errors = checker.checkString(file.contents.toString(), file.relative);
+			var fixResults;
+			var errors;
+			var contents = file.contents.toString();
+
+			if (shouldFix) {
+				fixResults = checker.fixString(contents, file.relative);
+				errors = fixResults.errors;
+				file.contents = new Buffer(fixResults.output);
+			} else {
+				errors = checker.checkString(contents, file.relative);
+			}
+
 			var errorList = errors.getErrorList();
 
 			file.jscs = {
