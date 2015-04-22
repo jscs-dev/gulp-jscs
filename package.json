@@ -7,7 +7,7 @@
   "author": {
     "name": "Sindre Sorhus",
     "email": "sindresorhus@gmail.com",
-    "url": "http://sindresorhus.com"
+    "url": "sindresorhus.com"
   },
   "engines": {
     "node": ">=0.10.0"
@@ -34,10 +34,10 @@
     "checker"
   ],
   "dependencies": {
-    "gulp-util": "^3.0.0",
-    "jscs": "^1.8.0",
+    "gulp-util": "^3.0.4",
+    "jscs": "^1.12.0",
     "object-assign": "^2.0.0",
-    "through2": "^0.6.1",
+    "through2": "^0.6.5",
     "tildify": "^1.0.0"
   },
   "devDependencies": {
