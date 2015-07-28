@@ -1,6 +1,6 @@
 {
   "name": "gulp-jscs",
-  "version": "1.6.0",
+  "version": "2.0.0",
   "description": "Check JavaScript code style with jscs",
   "license": "MIT",
   "repository": "jscs-dev/gulp-jscs",
