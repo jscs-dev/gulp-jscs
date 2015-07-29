@@ -179,7 +179,7 @@ describe('Reporter', function () {
 		stream.end();
 	});
 
-	it('`.reporter()` should accept a built-in JSCS reporter name', function (cb) {
+	it('`.reporter()` called with a non-function argument should delegate reporter loading to JSCS', function (cb) {
 		stubStdout();
 		var stream = jscs();
 
