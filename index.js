@@ -6,7 +6,6 @@ var Checker = require('jscs');
 var loadConfigFile = require('jscs/lib/cli-config');
 var assign = require('object-assign');
 var tildify = require('tildify');
-var reporters = require('./reporters');
 
 var plugin = module.exports = function (options) {
 	options = options || '.jscsrc';
@@ -89,4 +88,4 @@ var plugin = module.exports = function (options) {
 	});
 };
 
-plugin.reporter = reporter;
+plugin.reporter = require('./reporters');
