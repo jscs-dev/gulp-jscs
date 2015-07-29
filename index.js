@@ -7,7 +7,7 @@ var loadConfigFile = require('jscs/lib/cli-config');
 var assign = require('object-assign');
 var tildify = require('tildify');
 
-var plugin = module.exports = function (options) {
+module.exports = function (options) {
 	options = options || '.jscsrc';
 
 	if (typeof options === 'string') {
@@ -88,4 +88,4 @@ var plugin = module.exports = function (options) {
 	});
 };
 
-plugin.reporter = require('./reporters');
+module.exports.reporter = require('./reporters');

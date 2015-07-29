@@ -198,18 +198,69 @@ describe('Reporter', function () {
 		stream.end();
 	});
 
-	it('`fail` reporter should throw an error', function (cb) {
+	it('`fail` reporter should emit an error at the end of the stream', function (cb) {
 		var stream = jscs();
+		var passedErrorAssertion = false;
 
-		stream.pipe(jscs.reporter('fail')).on('error', function (err) {
-			assert(err instanceof Error && /JSCS/.test(err.message));
-			cb();
-		}).resume();
+		stream
+			.pipe(jscs.reporter('fail'))
+			.on('error', function (err) {
+				assert(err instanceof Error && /JSCS/.test(err.message));
+				passedErrorAssertion = true;
+			})
+			.pipe(streamAssert.length(2))
+			.pipe(streamAssert.first(function (file) {
+				var errors = file.jscs.errors;
+				assert(/Multiple var declaration/.test(errors.explainError(errors.getErrorList()[0], false)));
+			}))
+			.pipe(streamAssert.second(function (file) {
+				assert(file.jscs.success);
+			}))
+			.pipe(streamAssert.end(function (err) {
+				if (err) return cb(err);
+				assert(passedErrorAssertion, 'Did not emit an error');
+				cb();
+			}));
 
 		stream.write(new gutil.File({
 			base: __dirname,
 			path: __dirname + '/fixture.js',
 			contents: new Buffer('var x = 1,y = 2;')
+		}));
+
+		stream.write(new gutil.File({
+			base: __dirname,
+			path: __dirname + '/passing.js',
+			contents: new Buffer('var x = 1; var y = 2;')
+		}));
+
+		stream.end();
+	});
+
+	it('`failImmediately` reporter should emit an error immediately', function (cb) {
+		var stream = jscs();
+
+		stream
+			.pipe(jscs.reporter('failImmediately'))
+			.on('error', function (err) {
+				assert(err instanceof Error && /JSCS/.test(err.message));
+				cb();
+			})
+			.pipe(streamAssert.second(function (file) {
+				cb(new Error('Did not emit an error immediately'));
+			}))
+			.pipe(streamAssert.end());
+
+		stream.write(new gutil.File({
+			base: __dirname,
+			path: __dirname + '/fixture.js',
+			contents: new Buffer('var x = 1,y = 2;')
+		}));
+
+		stream.write(new gutil.File({
+			base: __dirname,
+			path: __dirname + '/passing.js',
+			contents: new Buffer('var x = 1; var y = 2;')
 		}));
 
 		stream.end();

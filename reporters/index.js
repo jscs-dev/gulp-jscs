@@ -5,8 +5,8 @@ var loadReporter = require('./loadReporter');
 var failReporter = require('./fail');
 
 module.exports = function (reporter) {
-	if (reporter === 'fail') {
-		return failReporter();
+	if (reporter === 'fail' || reporter === 'failImmediately') {
+		return failReporter(reporter === 'failImmediately');
 	}
 
 	var rpt = loadReporter(reporter);
