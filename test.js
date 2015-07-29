@@ -179,7 +179,7 @@ describe('Reporter', function () {
 		stream.end();
 	});
 
-	it('should accept a built-in JSCS reporter name', function (cb) {
+	it('`.reporter()` should accept a built-in JSCS reporter name', function (cb) {
 		stubStdout();
 		var stream = jscs();
 
@@ -188,6 +188,25 @@ describe('Reporter', function () {
 			teardown();
 			cb();
 		}).resume();
+
+		stream.write(new gutil.File({
+			base: __dirname,
+			path: __dirname + '/fixture.js',
+			contents: new Buffer('var x = 1,y = 2;')
+		}));
+
+		stream.end();
+	});
+
+	it('`.reporter()` should accept a function', function (cb) {
+		function reporterFn(errors) {
+			assert(/Multiple var declaration/.test(errors[0].explainError(errors[0].getErrorList()[0], false)));
+			cb();
+		}
+
+		var stream = jscs();
+
+		stream.pipe(jscs.reporter(reporterFn)).resume();
 
 		stream.write(new gutil.File({
 			base: __dirname,
@@ -261,25 +280,6 @@ describe('Reporter', function () {
 			base: __dirname,
 			path: __dirname + '/passing.js',
 			contents: new Buffer('var x = 1; var y = 2;')
-		}));
-
-		stream.end();
-	});
-
-	it('should accept a function', function (cb) {
-		function reporterFn(errors) {
-			assert(/Multiple var declaration/.test(errors[0].explainError(errors[0].getErrorList()[0], false)));
-			cb();
-		}
-
-		var stream = jscs();
-
-		stream.pipe(jscs.reporter(reporterFn)).resume();
-
-		stream.write(new gutil.File({
-			base: __dirname,
-			path: __dirname + '/fixture.js',
-			contents: new Buffer('var x = 1,y = 2;')
 		}));
 
 		stream.end();
