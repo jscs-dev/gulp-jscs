@@ -23,10 +23,13 @@ module.exports = function (options) {
 
 	var configPath = options.configPath;
 	var shouldFix = options.fix;
+	var reporter = options.reporter;
+	var filesError = [];
 
 	delete options.esnext;
 	delete options.configPath;
 	delete options.fix;
+	delete options.reporter;
 
 	if (configPath) {
 		if (typeof options === 'object' && Object.keys(options).length) {
@@ -86,9 +89,14 @@ module.exports = function (options) {
 				file.jscs.errors = errorList;
 			}
 
-			errorList.forEach(function (err) {
-				out.push(errors.explainError(err, true));
-			});
+			if (reporter) {
+				filesError.push(errors);
+			} else {
+				errorList.forEach(function (err) {
+					out.push(errors.explainError(err, true));
+				});
+			}
+
 		} catch (err) {
 			out.push(err.stack.replace('null:', file.relative + ':'));
 		}
@@ -99,6 +107,9 @@ module.exports = function (options) {
 			this.emit('error', new gutil.PluginError('gulp-jscs', out.join('\n\n'), {
 				showStack: false
 			}));
+		} else if (filesError.length) {
+			reporter = loadConfigFile.getReporter(reporter);
+			reporter.writer(filesError);
 		}
 
 		cb();
