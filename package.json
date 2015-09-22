@@ -14,7 +14,7 @@
   },
   "scripts": {
     "pretest": "jscs *.js reporters",
-    "test": "mocha"
+    "test": "xo && mocha"
   },
   "files": [
     "index.js"
@@ -43,5 +43,6 @@
   "devDependencies": {
     "mocha": "*",
     "stream-assert": "^2.0.2",
+    "xo": "*"
   }
 }

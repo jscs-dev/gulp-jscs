@@ -1,15 +1,17 @@
+/* eslint-env mocha */
 'use strict';
+var path = require('path');
 var assert = require('assert');
 var gutil = require('gulp-util');
-var jscs = require('./');
 var streamAssert = require('stream-assert');
+var jscs = require('./');
 
 var stdoutWrite = process.stdout.write;
 var stdoutStub;
 
 function stubStdout() {
 	stdoutStub = '';
-	process.stdout.write = function(str) {
+	process.stdout.write = function (str) {
 		stdoutStub += str;
 	};
 }
@@ -37,13 +39,13 @@ it('should check code style of JS files', function (cb) {
 
 	stream.write(new gutil.File({
 		base: __dirname,
-		path: __dirname + '/fixture.js',
+		path: path.join(__dirname, 'fixture.js'),
 		contents: new Buffer('var x = 1,y = 2;')
 	}));
 
 	stream.write(new gutil.File({
 		base: __dirname,
-		path: __dirname + '/fixture2.js',
+		path: path.join(__dirname, 'fixture2.js'),
 		contents: new Buffer('var x = { a: 1 };')
 	}));
 
@@ -62,7 +64,7 @@ it('should check code style of JS files using a preset', function (cb) {
 
 	stream.write(new gutil.File({
 		base: __dirname,
-		path: __dirname + '/fixture.js',
+		path: path.join(__dirname, 'fixture.js'),
 		contents: new Buffer('var x = 1,y = 2;')
 	}));
 
@@ -77,7 +79,7 @@ it('should pass valid files', function (cb) {
 	}).on('end', cb).resume();
 
 	stream.write(new gutil.File({
-		path: __dirname + '/fixture.js',
+		path: path.join(__dirname, 'fixture.js'),
 		contents: new Buffer('var x = 1; var y = 2;')
 	}));
 
@@ -93,14 +95,14 @@ it('should respect "excludeFiles" from config', function (cb) {
 
 	stream.write(new gutil.File({
 		base: __dirname,
-		path: __dirname + '/excluded.js',
+		path: path.join(__dirname, 'excluded.js'),
 		contents: new Buffer('var x = { a: 1 };')
 	}));
 
 	stream.end();
 });
 
-it('should accept both esnext and configPath options', function(cb) {
+it('should accept both esnext and configPath options', function (cb) {
 	var stream = jscs({
 		esnext: true,
 		configPath: '.jscsrc'
@@ -116,7 +118,7 @@ it('should accept both esnext and configPath options', function(cb) {
 
 	stream.write(new gutil.File({
 		base: __dirname,
-		path: __dirname + '/fixture.js',
+		path: path.join(__dirname, 'fixture.js'),
 		contents: new Buffer('import x from \'x\'; var x = 1, y = 2;')
 	}));
 
@@ -124,8 +126,6 @@ it('should accept both esnext and configPath options', function(cb) {
 });
 
 it('should accept the fix option', function (cb) {
-	var data = '';
-
 	var stream = jscs({
 		fix: true,
 		configPath: '.jscsrc'
@@ -139,7 +139,7 @@ it('should accept the fix option', function (cb) {
 
 	stream.write(new gutil.File({
 		base: __dirname,
-		path: __dirname + '/fixture.js',
+		path: path.join(__dirname, 'fixture.js'),
 		contents: new Buffer('var x = { a: 1, b: 2 }')
 	}));
 
@@ -164,7 +164,7 @@ describe('Reporter', function () {
 		stubStdout();
 		var stream = jscs();
 
-		stream.pipe(jscs.reporter()).on('end', function (err) {
+		stream.pipe(jscs.reporter()).on('end', function () {
 			assert(/Multiple var declaration[^]*---\^/.test(stdoutStub));
 			teardown();
 			cb();
@@ -172,7 +172,7 @@ describe('Reporter', function () {
 
 		stream.write(new gutil.File({
 			base: __dirname,
-			path: __dirname + '/fixture.js',
+			path: path.join(__dirname, 'fixture.js'),
 			contents: new Buffer('var x = 1,y = 2;')
 		}));
 
@@ -183,7 +183,7 @@ describe('Reporter', function () {
 		stubStdout();
 		var stream = jscs();
 
-		stream.pipe(jscs.reporter('inlinesingle')).on('end', function (err) {
+		stream.pipe(jscs.reporter('inlinesingle')).on('end', function () {
 			assert(/line 1, col 0, Multiple var declaration/.test(stdoutStub));
 			teardown();
 			cb();
@@ -191,7 +191,7 @@ describe('Reporter', function () {
 
 		stream.write(new gutil.File({
 			base: __dirname,
-			path: __dirname + '/fixture.js',
+			path: path.join(__dirname, 'fixture.js'),
 			contents: new Buffer('var x = 1,y = 2;')
 		}));
 
@@ -210,7 +210,7 @@ describe('Reporter', function () {
 
 		stream.write(new gutil.File({
 			base: __dirname,
-			path: __dirname + '/fixture.js',
+			path: path.join(__dirname, 'fixture.js'),
 			contents: new Buffer('var x = 1,y = 2;')
 		}));
 
@@ -236,20 +236,24 @@ describe('Reporter', function () {
 				assert(file.jscs.success);
 			}))
 			.pipe(streamAssert.end(function (err) {
-				if (err) return cb(err);
+				if (err) {
+					cb(err);
+					return;
+				}
+
 				assert(passedErrorAssertion, 'Did not emit an error');
 				cb();
 			}));
 
 		stream.write(new gutil.File({
 			base: __dirname,
-			path: __dirname + '/fixture.js',
+			path: path.join(__dirname, 'fixture.js'),
 			contents: new Buffer('var x = 1,y = 2;')
 		}));
 
 		stream.write(new gutil.File({
 			base: __dirname,
-			path: __dirname + '/passing.js',
+			path: path.join(__dirname, 'passing.js'),
 			contents: new Buffer('var x = 1; var y = 2;')
 		}));
 
@@ -265,20 +269,20 @@ describe('Reporter', function () {
 				assert(err instanceof Error && /JSCS/.test(err.message));
 				cb();
 			})
-			.pipe(streamAssert.second(function (file) {
+			.pipe(streamAssert.second(function () {
 				cb(new Error('Did not emit an error immediately'));
 			}))
 			.pipe(streamAssert.end());
 
 		stream.write(new gutil.File({
 			base: __dirname,
-			path: __dirname + '/fixture.js',
+			path: path.join(__dirname, 'fixture.js'),
 			contents: new Buffer('var x = 1,y = 2;')
 		}));
 
 		stream.write(new gutil.File({
 			base: __dirname,
-			path: __dirname + '/passing.js',
+			path: path.join(__dirname, 'passing.js'),
 			contents: new Buffer('var x = 1; var y = 2;')
 		}));
 

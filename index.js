@@ -16,7 +16,7 @@ module.exports = function (options) {
 
 	options = assign({esnext: false}, options);
 
-	var checker = new Checker({esnext: !!options.esnext});
+	var checker = new Checker({esnext: Boolean(options.esnext)});
 
 	checker.registerDefaultRules();
 
