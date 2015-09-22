@@ -35,13 +35,13 @@
   ],
   "dependencies": {
     "gulp-util": "^3.0.4",
-    "jscs": "^2.0.0",
-    "object-assign": "^3.0.0",
+    "jscs": "^2.1.1",
+    "object-assign": "^4.0.1",
     "through2": "^2.0.0",
     "tildify": "^1.0.0"
   },
   "devDependencies": {
     "mocha": "*",
-    "stream-assert": "^2.0.2"
+    "stream-assert": "^2.0.2",
   }
 }
