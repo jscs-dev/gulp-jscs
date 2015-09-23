@@ -102,9 +102,8 @@ it('should respect "excludeFiles" from config', function (cb) {
 	stream.end();
 });
 
-it('should accept both esnext and configPath options', function (cb) {
+it('should accept configPath options', function (cb) {
 	var stream = jscs({
-		esnext: true,
 		configPath: '.jscsrc'
 	});
 
@@ -154,9 +153,9 @@ it('should throw when passing both configPath and code style options', function 
 });
 
 it('should not mutate the options object passed as argument', function () {
-	var options = {esnext: true};
+	var options = {foo: true};
 	jscs(options);
-	assert.equal(options.esnext, true);
+	assert.equal(options.foo, true);
 });
 
 describe('Reporter', function () {

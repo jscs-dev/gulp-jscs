@@ -75,9 +75,6 @@ See the `jscs` [options](http://jscs.info/overview.html#options).
 
 Alternatively you can set the `configPath` *(default: `'.jscsrc'`)* option to the path of a [.jscsrc](http://jscs.info/rules.html) file.
 
-Set `esnext: true` if you want your code to be parsed as ES6 using the harmony
-version of the esprima parser.
-
 Set `fix: true` if you want jscs to attempt to auto-fix your files. Be sure to pipe to `gulp.dest` if you use this option.
 
 

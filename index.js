@@ -14,16 +14,15 @@ module.exports = function (options) {
 		options = {configPath: options};
 	}
 
-	options = assign({esnext: false}, options);
+	options = assign({}, options);
 
-	var checker = new Checker({esnext: Boolean(options.esnext)});
+	var checker = new Checker();
 
 	checker.registerDefaultRules();
 
 	var configPath = options.configPath;
 	var shouldFix = options.fix;
 
-	delete options.esnext;
 	delete options.configPath;
 	delete options.fix;
 
