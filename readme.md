@@ -42,10 +42,26 @@ gulp.task('default', () => {
 });
 ```
 
+### Reporting & fixing & failing on lint error
+
+```js
+const gulp = require('gulp');
+const jscs = require('gulp-jscs');
+
+gulp.task('default', () => {
+	return gulp.src('src/app.js')
+		.pipe(jscs({fix: true}))
+		.pipe(jscs.reporter())
+		.pipe(jscs.reporter('fail'))
+		.pipe(gulp.dest('src'));
+});
+```
+
 
 ## Results
 
-A `jscs` object will be attached to the file object which can be used for custom error reporting. An example with one error might look like this:
+A `jscs` object will be attached to the file object.  
+An example with one error might look like this:
 
 ```js
 {
@@ -64,19 +80,38 @@ A `jscs` object will be attached to the file object which can be used for custom
 
 ## API
 
+JSCS [config](http://jscs.info/overview.html#options) should be placed in a `.jscsrc` file.
+
 ### jscs([options])
 
 #### options
 
-See the JSCS [options](http://jscs.info/overview.html#options).
+##### fix
 
-Alternatively you can set the `configPath` *(default: `'.jscsrc'`)* option to the path of a [.jscsrc](http://jscs.info/rules.html) file.
+Type: `boolean`  
+Default: `false`
 
-Set `fix: true` if you want jscs to attempt to auto-fix your files. Be sure to pipe to `gulp.dest` if you use this option.
+Make JSCS attempt to auto-fix your files.  
+Be sure to pipe to `gulp.dest` if you use this option.
+
+##### configPath
+
+Type: `string`  
+Default: JSCS will search for the config file up to your home directory.
+
+Set the path to the JSCS config file.  
+Only use this option when it can't be found automatically.
 
 ### jscs.reporter([reporter])
 
+#### reporter
+
+Type: `string`  
+Default: `console`
+
 See the JSCS [reporter docs](http://jscs.info/overview#-reporter-r) for supported input.
+
+Can be used multiple times in the same pipeline.
 
 This plugin also ships with some custom reporters:
 

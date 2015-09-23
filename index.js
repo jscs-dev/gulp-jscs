@@ -2,43 +2,29 @@
 var path = require('path');
 var gutil = require('gulp-util');
 var through = require('through2');
+var tildify = require('tildify');
 var Checker = require('jscs');
 var loadConfigFile = require('jscs/lib/cli-config');
-var assign = require('object-assign');
-var tildify = require('tildify');
 
-module.exports = function (options) {
-	options = options || '.jscsrc';
-
-	if (typeof options === 'string') {
-		options = {configPath: options};
-	}
-
-	options = assign({}, options);
+module.exports = function (opts) {
+	opts = opts || {};
 
 	var checker = new Checker();
 
 	checker.registerDefaultRules();
 
-	var configPath = options.configPath;
-	var shouldFix = options.fix;
+	try {
+		checker.configure(loadConfigFile.load(opts.configPath));
+	} catch (err) {
+		err.message = 'Unable to load JSCS config file';
 
-	delete options.configPath;
-	delete options.fix;
-
-	if (configPath) {
-		if (typeof options === 'object' && Object.keys(options).length) {
-			throw new Error('configPath option is not compatible with code style options');
+		if (opts.configPath) {
+			err.message += ' at ' + tildify(path.resolve(opts.configPath));
 		}
 
-		try {
-			checker.configure(loadConfigFile.load(configPath));
-		} catch (err) {
-			err.message = 'Unable to load JSCS config file at ' + tildify(path.resolve(configPath)) + '\n' + err.message;
-			throw err;
-		}
-	} else {
-		checker.configure(options);
+		err.message += '\n' + err.message;
+
+		throw err;
 	}
 
 	return through.obj(function (file, enc, cb) {
@@ -61,7 +47,7 @@ module.exports = function (options) {
 		var errors;
 		var contents = file.contents.toString();
 
-		if (shouldFix) {
+		if (opts.fix) {
 			fixResults = checker.fixString(contents, file.relative);
 			errors = fixResults.errors;
 			file.contents = new Buffer(fixResults.output);

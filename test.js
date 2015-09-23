@@ -4,6 +4,7 @@ var path = require('path');
 var assert = require('assert');
 var gutil = require('gulp-util');
 var streamAssert = require('stream-assert');
+var tempWrite = require('temp-write');
 var jscs = require('./');
 
 var stdoutWrite = process.stdout.write;
@@ -53,7 +54,9 @@ it('should check code style of JS files', function (cb) {
 });
 
 it('should check code style of JS files using a preset', function (cb) {
-	var stream = jscs({preset: 'google'});
+	var stream = jscs({
+		configPath: tempWrite.sync(JSON.stringify({preset: 'google'}))
+	});
 
 	stream
 		.pipe(streamAssert.first(function (file) {
@@ -126,8 +129,7 @@ it('should accept configPath options', function (cb) {
 
 it('should accept the fix option', function (cb) {
 	var stream = jscs({
-		fix: true,
-		configPath: '.jscsrc'
+		fix: true
 	});
 
 	stream.on('data', function (file) {
@@ -143,13 +145,6 @@ it('should accept the fix option', function (cb) {
 	}));
 
 	stream.end();
-});
-
-it('should throw when passing both configPath and code style options', function () {
-	assert.throws(jscs.bind(null, {
-		configPath: '.jscsrc',
-		preset: 'airbnb'
-	}), /configPath/);
 });
 
 it('should not mutate the options object passed as argument', function () {
