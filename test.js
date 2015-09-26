@@ -147,6 +147,43 @@ it('should accept the fix option', function (cb) {
 	stream.end();
 });
 
+it('should run autofix over as many errors as possible', function (done) {
+	var config = {
+		maxErrors: 1,
+		requireSpaceBeforeBinaryOperators: ['=']
+	};
+	var validJS = 'var foo =1;\nvar bar =2;';
+	var invalidJS = 'var foo=1;\nvar bar=2;';
+
+	var stream = jscs({
+		fix: true,
+		configPath: tempWrite.sync(JSON.stringify(config))
+	});
+
+	stream
+		.pipe(streamAssert.first(function (file) {
+			assert.equal(file.contents.toString(), validJS);
+		}))
+		.pipe(streamAssert.second(function (file) {
+			assert.equal(file.contents.toString(), validJS);
+		}))
+		.pipe(streamAssert.end(done));
+
+	stream.write(new gutil.File({
+		base: __dirname,
+		path: path.join(__dirname, 'fixture.js'),
+		contents: new Buffer(invalidJS)
+	}));
+
+	stream.write(new gutil.File({
+		base: __dirname,
+		path: path.join(__dirname, 'fixture2.js'),
+		contents: new Buffer(invalidJS)
+	}));
+
+	stream.end();
+});
+
 it('should not mutate the options object passed as argument', function () {
 	var options = {foo: true};
 	jscs(options);

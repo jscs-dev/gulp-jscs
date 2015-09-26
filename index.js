@@ -9,12 +9,12 @@ var loadConfigFile = require('jscs/lib/cli-config');
 module.exports = function (opts) {
 	opts = opts || {};
 
+	var config;
+	var overrides = {};
 	var checker = new Checker();
 
-	checker.registerDefaultRules();
-
 	try {
-		checker.configure(loadConfigFile.load(opts.configPath));
+		config = loadConfigFile.load(opts.configPath);
 	} catch (err) {
 		err.message = 'Unable to load JSCS config file';
 
@@ -26,6 +26,16 @@ module.exports = function (opts) {
 
 		throw err;
 	}
+
+	// run autofix over as many errors as possible
+	if (opts.fix) {
+		overrides.maxErrors = Infinity;
+	}
+
+	checker.getConfiguration().override(overrides);
+
+	checker.registerDefaultRules();
+	checker.configure(config);
 
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
