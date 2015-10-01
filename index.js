@@ -10,7 +10,6 @@ module.exports = function (opts) {
 	opts = opts || {};
 
 	var config;
-	var overrides = {};
 	var checker = new Checker();
 
 	try {
@@ -29,10 +28,8 @@ module.exports = function (opts) {
 
 	// run autofix over as many errors as possible
 	if (opts.fix) {
-		overrides.maxErrors = Infinity;
+		config.maxErrors = Infinity;
 	}
-
-	checker.getConfiguration().override(overrides);
 
 	checker.registerDefaultRules();
 	checker.configure(config);
