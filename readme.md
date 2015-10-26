@@ -57,6 +57,22 @@ gulp.task('default', () => {
 });
 ```
 
+### HTML Reporting
+
+```js
+const gulp = require('gulp');
+const jscs = require('gulp-jscs-html-output');
+
+gulp.task('default', () => {
+	return gulp.src('src/app.js')
+		.pipe(jscs())
+		.pipe(jscs.reporter('html', {
+			output: 'path/to/output.html',
+			logToConsole: true
+		}));
+});
+```
+
 
 ## Results
 
@@ -117,7 +133,27 @@ This plugin also ships with some custom reporters:
 
 - `fail` - Emits an error at the end of the stream if there are lint errors.
 - `failImmediately` - Emits an error immediately if there are lint errors.
+- `html` - Outputs a pretty HTML file with a list of errors either at the given file path or in the root folder at `/jscs.html`.
 
+#### html reporter options
+
+Type: `object`
+
+Key value pairs for the following options
+
+##### output
+
+Type: `string`  
+Default: `/jscs.html`
+
+Enter the path to the desired output location as a string.
+
+##### logToConsole
+
+Type: `bool`  
+Default: `false`
+
+Set to true if you would like the reports printed to stdout as well as the HTML file.
 
 ## License
 
