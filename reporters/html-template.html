@@ -1,0 +1,85 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>JSCS HTML Report</title>
+        <meta name="description" content="JSCS HTML Report">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <link rel="stylesheet" href="css/main.css"> -->
+        <link href='https://fonts.googleapis.com/css?family=Raleway:500,400' rel='stylesheet' type='text/css'>
+        <style>
+            html {
+                font-family: 'Raleway', sans-serif;
+            }
+            body {
+                margin: 0;
+                background: #F1EEEE;
+            }
+            header {
+                position: relative;
+                padding: 20px;
+                box-shadow: 0 1px 6px rgba(0,0,0,0.4);
+                margin-bottom: 20px;
+                background: #fff;
+            }
+            header h1 {
+                margin: 0;
+            }
+            header .total-count {
+                position: absolute;
+                right: 20px;
+                margin: 0;
+                top: 50%;
+                transform: translate(0,-50%);
+            }
+            h2 {
+                font-size: 18px;
+                margin-top: 0;
+            }
+            p {
+                font-size: 15px;
+            }
+            .block {
+                position: relative;
+                padding: 5px 20px 5px 20px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            input[type=checkbox] {
+                position: absolute;
+                margin: 0;
+                width: calc(100% - 60px);
+                height: 21px;
+                opacity: 0;
+                cursor: pointer;
+            }
+            .block p {
+                display: none;
+            }
+            .block input[type=checkbox]:checked ~ p {
+                display: block;
+            }
+            .block input[type=checkbox]:hover ~ h2 {
+                text-decoration: underline;
+            }
+            .code {
+                background: #222;
+                color: #E0D46E;
+                padding: 8px;
+                border-radius: 4px;
+                display: inline-block;
+                margin: 0 0 10px 0;
+                font-family: "Courier New",Courier,monospace;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>JSCS Report</h1>
+            <p class="total-count">Errors found, {{totalCount}}</p>
+        </header>
+    </body>
+</html>

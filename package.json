@@ -34,6 +34,7 @@
     "checker"
   ],
   "dependencies": {
+    "fs-extra": "^0.26.0",
     "gulp-util": "^3.0.4",
     "jscs": "^2.1.1",
     "through2": "^2.0.0",
