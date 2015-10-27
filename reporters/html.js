@@ -6,11 +6,15 @@ var path = require('path');
 module.exports = function (opts) {
 	var errorCount = 0;
 	var totalCount = 0;
-	var outputFile = opts.output || (process.cwd() + '/jscs.html');
 	var fileText = '';
+	var fileRef = {};
+	var outputFile;
 
-	fs.ensureFileSync(outputFile);
-	fs.writeFileSync(outputFile, fs.readFileSync(path.join(__dirname, '/html-template.html'), 'utf-8'));
+	if (opts && opts.output) {
+		outputFile = opts.output;
+	} else {
+		outputFile = (process.cwd() + '/jscs.html');
+	}
 
 	function htmlEscape(str) {
 		return String(str)
@@ -22,6 +26,8 @@ module.exports = function (opts) {
 	}
 
 	return through.obj(function (file, enc, cb) {
+		fileRef = file;
+
 		if (file.jscs && !file.jscs.success) {
 			var errors = file.jscs.errors;
 			var errorList = errors.getErrorList();
@@ -39,7 +45,7 @@ module.exports = function (opts) {
 				var str = '\t\t\t<input type="checkbox">\n\t\t\t<h2>' + (errorCount + ' code style ' + (errorCount === 1 ? 'error' : 'errors') + ' found in ' + fileName) + '</h2>\n';
 
 				fileText += str;
-				if (opts.logToConsole) {
+				if (opts && opts.logToConsole) {
 					console.log((errorCount + ' code style ' + (errorCount === 1 ? 'error' : 'errors') + ' found in ' + fileName));
 				}
 				errorCount = 0;
@@ -49,7 +55,7 @@ module.exports = function (opts) {
 				var str = '\t\t\t<p>';
 				var lines = errors.explainError(error).split('\n');
 
-				if (opts.logToConsole) {
+				if (opts && opts.logToConsole) {
 					console.log(errors.explainError(error));
 				}
 
@@ -70,11 +76,15 @@ module.exports = function (opts) {
 
 		cb(null, file);
 	}, function (cb) {
-		var results = fs.readFileSync(outputFile, 'utf-8');
+		if (fileRef.jscs && !fileRef.jscs.success) {
+			fs.ensureFileSync(outputFile);
+			var results = fs.readFileSync(path.join(__dirname, '/html-template.html'), 'utf-8');
 
-		results = results.replace('{{totalCount}}', totalCount).split('</body>')[0];
-		results += (fileText + '\t\t</div>\n\t</body>\n</html>');
-		fs.writeFileSync(outputFile, results);
+			results = results.replace('{{totalCount}}', totalCount).split('</body>')[0];
+			results += (fileText + '\t\t</div>\n\t</body>\n</html>');
+
+			fs.writeFileSync(outputFile, results);
+		}
 
 		cb();
 	});

@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "mocha": "*",
+    "rewire": "^2.3.4",
     "stream-assert": "^2.0.2",
     "temp-write": "^1.1.2",
     "xo": "*"

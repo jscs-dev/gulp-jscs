@@ -61,7 +61,7 @@ gulp.task('default', () => {
 
 ```js
 const gulp = require('gulp');
-const jscs = require('gulp-jscs-html-output');
+const jscs = require('gulp-jscs');
 
 gulp.task('default', () => {
 	return gulp.src('src/app.js')

@@ -5,10 +5,26 @@ var assert = require('assert');
 var gutil = require('gulp-util');
 var streamAssert = require('stream-assert');
 var tempWrite = require('temp-write');
+var rewire = require('rewire');
 var jscs = require('./');
+var htmlreporter = rewire('./reporters/html.js');
+var outputPath = '';
 
 var stdoutWrite = process.stdout.write;
 var stdoutStub;
+
+// Stub out the 'fs' I/O methods called in the HTML reporter so we don't generate files during testing.
+var fsMock = {
+	writeFileSync: function (path) {
+		outputPath = path;
+	},
+	ensureFileSync: function () {
+	}
+};
+htmlreporter.__set__({
+	'fs.writeFileSync': fsMock.writeFileSync,
+	'fs.ensureFileSync': fsMock.ensureFileSync
+});
 
 function stubStdout() {
 	stdoutStub = '';
@@ -30,7 +46,7 @@ it('should check code style of JS files', function (cb) {
 	stream
 		.pipe(streamAssert.first(function (file) {
 			var errors = file.jscs.errors;
-			assert(/Multiple var declaration/.test(errors.explainError(errors.getErrorList()[0], false)));
+			assert(/Multiple var declaration/.test(errors.explainError(errors.getErrorList()[0], true)));
 		}))
 		.pipe(streamAssert.second(function (file) {
 			var errors = file.jscs.errors;
@@ -315,6 +331,88 @@ describe('Reporter', function () {
 			base: __dirname,
 			path: path.join(__dirname, 'passing.js'),
 			contents: new Buffer('var x = 1; var y = 2;')
+		}));
+
+		stream.end();
+	});
+
+	it('`html` reporter should output a file with the given name at the location passed in options', function (cb) {
+		stubStdout();
+		var stream = jscs();
+
+		stream.pipe(htmlreporter({
+			output: '/doc/jscs.html'
+		})).on('end', function () {
+			assert.equal(outputPath, '/doc/jscs.html');
+			teardown();
+			cb();
+		}).resume();
+
+		stream.write(new gutil.File({
+			base: __dirname,
+			path: path.join(__dirname, 'fixture.js'),
+			contents: new Buffer('var x = 1,y = 2;')
+		}));
+
+		stream.end();
+	});
+
+	it('`html` reporter should output a file at /jscs.html if path is passed in the output option', function (cb) {
+		stubStdout();
+		var stream = jscs();
+
+		stream.pipe(htmlreporter()).on('end', function () {
+			assert.equal(outputPath, process.cwd() + '/jscs.html');
+			teardown();
+			cb();
+		}).resume();
+
+		stream.write(new gutil.File({
+			base: __dirname,
+			path: path.join(__dirname, 'fixture.js'),
+			contents: new Buffer('var x = 1,y = 2;')
+		}));
+
+		stream.end();
+	});
+
+	it('`html` reporter should print errors to console if logToConsole is set to true', function (cb) {
+		stubStdout();
+		var stream = jscs();
+
+		stream.pipe(htmlreporter({
+			logToConsole: true
+		})).on('end', function () {
+			assert(/Multiple var declaration[^]*---\^/.test(stdoutStub));
+			teardown();
+			cb();
+		}).resume();
+
+		stream.write(new gutil.File({
+			base: __dirname,
+			path: path.join(__dirname, 'fixture.js'),
+			contents: new Buffer('var x = 1,y = 2;')
+		}));
+
+		stream.end();
+	});
+
+	it('`html` reporter should not write any output is there are no errors', function (cb) {
+		stubStdout();
+		var stream = jscs();
+
+		stream.pipe(jscs.reporter('html', {
+			logToConsole: true
+		})).on('end', function () {
+			assert.equal(stdoutStub, '');
+			teardown();
+			cb();
+		}).resume();
+
+		stream.write(new gutil.File({
+			base: __dirname,
+			path: path.join(__dirname, 'fixture.js'),
+			contents: new Buffer('var x = 1;')
 		}));
 
 		stream.end();
