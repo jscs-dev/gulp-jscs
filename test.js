@@ -46,7 +46,7 @@ it('should check code style of JS files', function (cb) {
 	stream
 		.pipe(streamAssert.first(function (file) {
 			var errors = file.jscs.errors;
-			assert(/Multiple var declaration/.test(errors.explainError(errors.getErrorList()[0], true)));
+			assert(/Multiple var declaration/.test(errors.explainError(errors.getErrorList()[0], false)));
 		}))
 		.pipe(streamAssert.second(function (file) {
 			var errors = file.jscs.errors;
