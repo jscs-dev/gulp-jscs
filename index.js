@@ -55,11 +55,11 @@ module.exports = function (opts) {
 		var contents = file.contents.toString();
 
 		if (opts.fix) {
-			fixResults = checker.fixString(contents, file.relative);
+			fixResults = checker.fixString(contents, file.path);
 			errors = fixResults.errors;
 			file.contents = new Buffer(fixResults.output);
 		} else {
-			errors = checker.checkString(contents, file.relative);
+			errors = checker.checkString(contents, file.path);
 		}
 
 		var errorList = errors.getErrorList();
