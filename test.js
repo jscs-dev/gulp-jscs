@@ -215,7 +215,7 @@ describe('Reporter', function () {
 		var stream = jscs();
 
 		stream.pipe(jscs.reporter('inlinesingle')).on('end', function () {
-			assert(/line 1, col 0, Multiple var declaration/.test(stdoutStub));
+			assert(/line 1, col 8, disallowMultipleVarDecl: Multiple var declaration/.test(stdoutStub));
 			teardown();
 			cb();
 		}).resume();

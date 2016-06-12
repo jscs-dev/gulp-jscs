@@ -1,7 +1,7 @@
 'use strict';
 var PluginError = require('gulp-util').PluginError;
 var through = require('through2');
-var loadReporter = require('./loadReporter');
+var loadReporter = require('./load-reporter');
 var failReporter = require('./fail');
 
 module.exports = function (reporter) {
