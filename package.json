@@ -34,6 +34,7 @@
     "checker"
   ],
   "dependencies": {
+    "fs-extra": "^0.26.0",
     "gulp-util": "^3.0.4",
     "jscs": "^3.0.4",
     "through2": "^2.0.0",
@@ -41,6 +42,7 @@
   },
   "devDependencies": {
     "mocha": "*",
+    "rewire": "^2.3.4",
     "stream-assert": "^2.0.2",
     "temp-write": "^2.1.0",
     "xo": "*"

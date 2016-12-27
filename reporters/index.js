@@ -3,10 +3,15 @@ var PluginError = require('gulp-util').PluginError;
 var through = require('through2');
 var loadReporter = require('./load-reporter');
 var failReporter = require('./fail');
+var htmlReporter = require('./html');
 
-module.exports = function (reporter) {
+module.exports = function (reporter, opts) {
 	if (reporter === 'fail' || reporter === 'failImmediately') {
 		return failReporter(reporter === 'failImmediately');
+	}
+
+	if (reporter === 'html') {
+		return htmlReporter(opts);
 	}
 
 	var rpt = loadReporter(reporter);
