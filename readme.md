@@ -2,7 +2,7 @@
 
 > Check JavaScript code style with [JSCS](http://jscs.info)
 
-![](screenshot.png)
+![](https://raw.githubusercontent.com/sindresorhus/gulp-jscs/master/screenshot.png)
 
 *Issues with the output should be reported on the JSCS [issue tracker](https://github.com/jscs-dev/node-jscs/issues).*
 
