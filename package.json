@@ -34,8 +34,8 @@
     "checker"
   ],
   "dependencies": {
-    "gulp-util": "^3.0.4",
     "jscs": "^3.0.4",
+    "plugin-error": "^0.1.2",
     "through2": "^2.0.0",
     "tildify": "^1.0.0"
   },
@@ -43,6 +43,7 @@
     "mocha": "*",
     "stream-assert": "^2.0.2",
     "temp-write": "^2.1.0",
+    "vinyl": "^2.1.0",
     "xo": "*"
   }
 }
