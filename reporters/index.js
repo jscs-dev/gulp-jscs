@@ -4,7 +4,9 @@ var through = require('through2');
 var loadReporter = require('./load-reporter');
 var failReporter = require('./fail');
 
-module.exports = function (reporter) {
+module.exports = function (reporter, reporterCfg) {
+    reporterCfg = reporterCfg || {};
+
 	if (reporter === 'fail' || reporter === 'failImmediately') {
 		return failReporter(reporter === 'failImmediately');
 	}
@@ -18,7 +20,7 @@ module.exports = function (reporter) {
 	// return stream that reports stuff
 	return through.obj(function (file, enc, cb) {
 		if (file.jscs && !file.jscs.success) {
-			rpt([file.jscs.errors]);
+			rpt([file.jscs.errors], reporterCfg);
 		}
 
 		cb(null, file);
