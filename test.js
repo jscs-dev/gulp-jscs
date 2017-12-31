@@ -2,7 +2,7 @@
 'use strict';
 var path = require('path');
 var assert = require('assert');
-var gutil = require('gulp-util');
+var Vinyl = require('vinyl');
 var streamAssert = require('stream-assert');
 var tempWrite = require('temp-write');
 var jscs = require('./');
@@ -38,13 +38,13 @@ it('should check code style of JS files', function (cb) {
 		}))
 		.pipe(streamAssert.end(cb));
 
-	stream.write(new gutil.File({
+	stream.write(new Vinyl({
 		base: __dirname,
 		path: path.join(__dirname, 'fixture.js'),
 		contents: new Buffer('var x = 1,y = 2;')
 	}));
 
-	stream.write(new gutil.File({
+	stream.write(new Vinyl({
 		base: __dirname,
 		path: path.join(__dirname, 'fixture2.js'),
 		contents: new Buffer('var x = { a: 1 };')
@@ -65,7 +65,7 @@ it('should check code style of JS files using a preset', function (cb) {
 		}))
 		.pipe(streamAssert.end(cb));
 
-	stream.write(new gutil.File({
+	stream.write(new Vinyl({
 		base: __dirname,
 		path: path.join(__dirname, 'fixture.js'),
 		contents: new Buffer('var x = 1,y = 2;')
@@ -81,7 +81,7 @@ it('should pass valid files', function (cb) {
 		assert(false, err);
 	}).on('end', cb).resume();
 
-	stream.write(new gutil.File({
+	stream.write(new Vinyl({
 		path: path.join(__dirname, 'fixture.js'),
 		contents: new Buffer('var x = 1; var y = 2;')
 	}));
@@ -96,7 +96,7 @@ it('should respect "excludeFiles" from config', function (cb) {
 		assert(false, err);
 	}).on('end', cb).resume();
 
-	stream.write(new gutil.File({
+	stream.write(new Vinyl({
 		base: __dirname,
 		path: path.join(__dirname, 'excluded.js'),
 		contents: new Buffer('var x = { a: 1 };')
@@ -118,7 +118,7 @@ it('should accept configPath options', function (cb) {
 		}))
 		.pipe(streamAssert.end(cb));
 
-	stream.write(new gutil.File({
+	stream.write(new Vinyl({
 		base: __dirname,
 		path: path.join(__dirname, 'fixture.js'),
 		contents: new Buffer('import x from \'x\'; var x = 1, y = 2;')
@@ -138,7 +138,7 @@ it('should accept the fix option', function (cb) {
 
 	stream.on('end', cb);
 
-	stream.write(new gutil.File({
+	stream.write(new Vinyl({
 		base: __dirname,
 		path: path.join(__dirname, 'fixture.js'),
 		contents: new Buffer('var x = { a: 1, b: 2 }')
@@ -169,13 +169,13 @@ it('should run autofix over as many errors as possible', function (done) {
 		}))
 		.pipe(streamAssert.end(done));
 
-	stream.write(new gutil.File({
+	stream.write(new Vinyl({
 		base: __dirname,
 		path: path.join(__dirname, 'fixture.js'),
 		contents: new Buffer(invalidJS)
 	}));
 
-	stream.write(new gutil.File({
+	stream.write(new Vinyl({
 		base: __dirname,
 		path: path.join(__dirname, 'fixture2.js'),
 		contents: new Buffer(invalidJS)
@@ -201,7 +201,7 @@ describe('Reporter', function () {
 			cb();
 		}).resume();
 
-		stream.write(new gutil.File({
+		stream.write(new Vinyl({
 			base: __dirname,
 			path: path.join(__dirname, 'fixture.js'),
 			contents: new Buffer('var x = 1,y = 2;')
@@ -220,7 +220,7 @@ describe('Reporter', function () {
 			cb();
 		}).resume();
 
-		stream.write(new gutil.File({
+		stream.write(new Vinyl({
 			base: __dirname,
 			path: path.join(__dirname, 'fixture.js'),
 			contents: new Buffer('var x = 1,y = 2;')
@@ -239,7 +239,7 @@ describe('Reporter', function () {
 
 		stream.pipe(jscs.reporter(reporterFn)).resume();
 
-		stream.write(new gutil.File({
+		stream.write(new Vinyl({
 			base: __dirname,
 			path: path.join(__dirname, 'fixture.js'),
 			contents: new Buffer('var x = 1,y = 2;')
@@ -276,13 +276,13 @@ describe('Reporter', function () {
 				cb();
 			}));
 
-		stream.write(new gutil.File({
+		stream.write(new Vinyl({
 			base: __dirname,
 			path: path.join(__dirname, 'fixture.js'),
 			contents: new Buffer('var x = 1,y = 2;')
 		}));
 
-		stream.write(new gutil.File({
+		stream.write(new Vinyl({
 			base: __dirname,
 			path: path.join(__dirname, 'passing.js'),
 			contents: new Buffer('var x = 1; var y = 2;')
@@ -305,13 +305,13 @@ describe('Reporter', function () {
 			}))
 			.pipe(streamAssert.end());
 
-		stream.write(new gutil.File({
+		stream.write(new Vinyl({
 			base: __dirname,
 			path: path.join(__dirname, 'fixture.js'),
 			contents: new Buffer('var x = 1,y = 2;')
 		}));
 
-		stream.write(new gutil.File({
+		stream.write(new Vinyl({
 			base: __dirname,
 			path: path.join(__dirname, 'passing.js'),
 			contents: new Buffer('var x = 1; var y = 2;')

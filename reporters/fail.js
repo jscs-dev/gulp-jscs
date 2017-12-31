@@ -1,5 +1,5 @@
 'use strict';
-var PluginError = require('gulp-util').PluginError;
+var PluginError = require('plugin-error');
 var through = require('through2');
 
 module.exports = function (failImmediately) {
