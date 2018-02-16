@@ -24,6 +24,49 @@ function teardown() {
 // in case test fails due to timeout
 afterEach(teardown);
 
+it('should pass file when it isNull()', function (cb) {
+	var sourceFile = {
+		isNull: function() {
+			return true;
+		}
+	};
+
+	var stream = jscs({
+		configPath: '.jscsrc'
+	});
+
+	stream.on("data", function (processedFile) {
+		assert(processedFile, sourceFile);
+
+		cb();
+	});
+
+	stream.write(sourceFile);
+});
+
+it('should omit an error when file isStream()', function (cb) {
+	var sourceFile = {
+		isNull: function() {
+			return false;
+		},
+		isStream: function() {
+			return true;
+		}
+	};
+
+	var stream = jscs({
+		configPath: '.jscsrc'
+	});
+
+	stream.on("error", function(error) {
+		assert(error.message, "Streaming not supported");
+
+		cb();
+	});
+
+	stream.write(sourceFile);
+});
+
 it('should check code style of JS files', function (cb) {
 	var stream = jscs();
 
@@ -127,6 +170,32 @@ it('should accept configPath options', function (cb) {
 	stream.end();
 });
 
+it('should accept config options directly', function (cb) {
+	var stream = jscs({
+		config: {
+			disallowMultipleVarDecl: true,
+			disallowSpacesInsideObjectBrackets: true,
+			excludeFiles: ['excluded.js']
+		}
+	});
+
+	stream
+		.pipe(streamAssert.first(function (file) {
+			var errors = file.jscs.errors;
+			var errorList = errors.getErrorList();
+			assert(errorList.length === 1 && /Multiple var declaration/.test(errors.explainError(errorList[0], false)));
+		}))
+		.pipe(streamAssert.end(cb));
+
+	stream.write(new Vinyl({
+		base: __dirname,
+		path: path.join(__dirname, 'fixture.js'),
+		contents: new Buffer('import x from \'x\'; var x = 1, y = 2;')
+	}));
+
+	stream.end();
+});
+
 it('should accept the fix option', function (cb) {
 	var stream = jscs({
 		fix: true
@@ -182,6 +251,22 @@ it('should run autofix over as many errors as possible', function (done) {
 	}));
 
 	stream.end();
+});
+
+it('should throw an error when the config path is invalid', function () {
+	var errorThrown = false;
+	var stream = null;
+
+	try {
+		stream = jscs({
+			configPath: "invalid.txt"
+		});
+	}
+	catch(error) {
+		errorThrown = true;
+	}
+
+	assert(errorThrown, true);
 });
 
 it('should not mutate the options object passed as argument', function () {

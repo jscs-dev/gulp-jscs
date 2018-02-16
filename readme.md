@@ -94,6 +94,12 @@ Default: `false`
 Make JSCS attempt to auto-fix your files.  
 Be sure to pipe to `gulp.dest` if you use this option.
 
+##### config
+
+Type: `object`  
+Default: Optionally specify the JSCS configuration settings directly.
+This will override the configPath option if specified.
+
 ##### configPath
 
 Type: `string`  

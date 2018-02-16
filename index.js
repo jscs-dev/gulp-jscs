@@ -7,23 +7,30 @@ var Checker = require('jscs');
 var loadConfigFile = require('jscs/lib/cli-config');
 
 module.exports = function (opts) {
-	opts = opts || {};
+	if(opts === undefined || opts === null || opts.constructor !== Object) {
+		opts = {};
+	}
 
 	var config;
 	var checker = new Checker();
 
-	try {
-		config = loadConfigFile.load(opts.configPath);
-	} catch (err) {
-		err.message = 'Unable to load JSCS config file';
+	if(opts.config !== undefined && opts.config !== null && opts.config.constructor === Object) {
+		config = opts.config;
+	}
+	else {
+		try {
+			config = loadConfigFile.load(opts.configPath);
+		} catch (err) {
+			err.message = 'Unable to load JSCS config file';
 
-		if (opts.configPath) {
-			err.message += ' at ' + tildify(path.resolve(opts.configPath));
+			if (opts.configPath) {
+				err.message += ' at ' + tildify(path.resolve(opts.configPath));
+			}
+
+			err.message += '\n' + err.message;
+
+			throw err;
 		}
-
-		err.message += '\n' + err.message;
-
-		throw err;
 	}
 
 	// run autofix over as many errors as possible
